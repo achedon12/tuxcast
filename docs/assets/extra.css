@@ -248,6 +248,15 @@ img.terminal {
 
 /* sections */
 
+.tc-film video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  background: #0f0b24;
+  box-shadow: 0 30px 60px -30px rgb(4 2 18 / 90%);
+}
+
 .tc-section {
   border-top: 1px solid rgb(169 159 214 / 18%);
 }

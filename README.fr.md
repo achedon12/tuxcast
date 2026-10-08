@@ -25,6 +25,13 @@ tuxcast doctor
 ```
 
 <p align="center">
+  <a href="https://achedon12.github.io/tuxcast/#intro">
+    <img src=".github/assets/intro-poster.jpg" alt="Voir tuxcast en 22 secondes" width="720"><br>
+    <sub>▶ tuxcast en 22 secondes</sub>
+  </a>
+</p>
+
+<p align="center">
   <img src=".github/assets/terminal-doctor.svg" alt="tuxcast doctor vérifie un Stream Deck, Discord, Spotify et le réseau" width="820">
 </p>
 
