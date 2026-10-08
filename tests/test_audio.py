@@ -35,3 +35,24 @@ def test_playing_streams(fake_system):
     system = fake_system(commands={"pactl": "/usr/bin/pactl"},
                          outputs={("pactl", "list", "sink-inputs"): PACTL})
     assert audio.playing(system) == [audio.Stream("42", "Spotify", "57"), audio.Stream("43", "obs", "57")]
+
+
+PACTL_SINKS = """Sink #57
+\tName: tuxcast_game
+\tDescription: Stream · Game
+\tMute: yes
+\tVolume: front-left: 52428 /  80% / -5.81 dB,   front-right: 52428 /  80% / -5.81 dB
+Sink #58
+\tName: alsa_output.headset
+\tDescription: Headset
+\tMute: no
+\tVolume: front-left: 65536 / 100% / 0.00 dB
+"""
+
+
+def test_sink_states(fake_system):
+    system = fake_system(commands={"pactl": "/usr/bin/pactl"}, outputs={("pactl", "list", "sinks"): PACTL_SINKS})
+    assert audio.sink_states(system) == [
+        audio.SinkState("57", "tuxcast_game", "Stream · Game", 80, True),
+        audio.SinkState("58", "alsa_output.headset", "Headset", 100, False),
+    ]

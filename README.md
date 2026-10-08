@@ -52,7 +52,7 @@ Each of these has a fix buried in a forum thread. tuxcast checks for all of them
 
 | Command | |
 | --- | --- |
-| [`tuxcast ui`](https://achedon12.github.io/tuxcast/commands/ui/) | Opens a local dashboard for everything below: checks with one-click fixes, a visual preview of your converted Stream Deck pages, audio routing |
+| [`tuxcast ui`](https://achedon12.github.io/tuxcast/commands/ui/) | Opens a control desk for everything below: a go-live tally, your Stream Deck and its pages, a mixer with faders, one-click fixes ([live demo](https://achedon12.github.io/tuxcast/demo/index.html)) |
 | [`tuxcast doctor`](https://achedon12.github.io/tuxcast/commands/doctor/) | Checks display server, audio, GPU encoder, OBS, Stream Deck, Discord, Spotify and network. Each problem comes with its fix |
 | [`tuxcast convert`](https://achedon12.github.io/tuxcast/commands/convert/) | Turns Elgato `.streamDeckProfile` exports into [StreamController](https://streamcontroller.core447.com/) pages: images, folders, multi actions, hotkeys (AZERTY and QWERTZ aware), OBS, Discord and Twitch keys |
 | [`tuxcast bridge discord`](https://achedon12.github.io/tuxcast/commands/bridge/) | Exposes Discord's socket (snap, Vesktop, native) to Flatpak clients, and recreates the bridge at every login |
@@ -60,13 +60,16 @@ Each of these has a fix buried in a forum thread. tuxcast checks for all of them
 | [`tuxcast deck`](https://achedon12.github.io/tuxcast/commands/deck/) | Lists Stream Decks, prints the udev rule they need, and resets one that froze after a crash, without unplugging it |
 | [`tuxcast patch`](https://achedon12.github.io/tuxcast/commands/patch/) | Re-applies the fixes you made to app files every time an update wipes them |
 
-### Or click through it
+### Or run it from a control desk
 
-`tuxcast ui` opens a dashboard on your machine. Drop an Elgato profile and preview every page,
-key by key, before converting it:
+`tuxcast ui` opens a dashboard on your machine: a tally that tells you whether you can go live, your
+Stream Deck with its real pages, a mixer with a fader per audio channel, and a button for every fix.
+[Try the live demo](https://achedon12.github.io/tuxcast/demo/index.html), no install needed.
 
 <p align="center">
-  <img src="docs/assets/ui-convert.png" alt="The tuxcast dashboard previewing a converted Elgato profile key by key" width="820">
+  <a href="https://achedon12.github.io/tuxcast/demo/index.html">
+    <img src="docs/assets/ui-desk.png" alt="The tuxcast dashboard: the tally, a Stream Deck with its pages, the checks and the audio mixer" width="900">
+  </a>
 </p>
 
 ### Bring your Stream Deck profiles from Windows

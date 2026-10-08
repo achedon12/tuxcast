@@ -159,3 +159,53 @@ def move(stream: str, sink: str) -> str:
     except OSError as exc:
         return f"cannot run pactl: {exc.strerror}"
     return "" if done.returncode == 0 else (done.stderr.strip() or "pactl failed")
+
+
+@dataclass(frozen=True)
+class SinkState:
+    index: str
+    name: str
+    description: str
+    volume: int  # percent
+    muted: bool
+
+
+def sink_states(system: System) -> list[SinkState]:
+    """Every sink with its volume and mute state, from `pactl list sinks`."""
+    out = system.run("pactl", "list", "sinks")
+    if not out or not out.ok:
+        return []
+    states = []
+    for block in out.stdout.split("Sink #")[1:]:
+        index = block.split("\n", 1)[0].strip()
+        name = re.search(r"^\s*Name:\s*(\S+)", block, re.MULTILINE)
+        description = re.search(r"^\s*Description:\s*(.+)$", block, re.MULTILINE)
+        volume = re.search(r"^\s*Volume:.*?(\d+)%", block, re.MULTILINE)
+        muted = re.search(r"^\s*Mute:\s*(yes|no)", block, re.MULTILINE)
+        if name:
+            label = description.group(1).strip() if description else name.group(1)
+            states.append(SinkState(index, name.group(1), label, int(volume.group(1)) if volume else 100,
+                                    bool(muted and muted.group(1) == "yes")))
+    return states
+
+
+def default_sink(system: System) -> str:
+    out = system.run("pactl", "get-default-sink")
+    return out.stdout.strip() if out and out.ok else ""
+
+
+def _pactl(*args: str) -> str:
+    try:
+        done = subprocess.run(["pactl", *args], capture_output=True, text=True, check=False)
+    except OSError as exc:
+        return f"cannot run pactl: {exc.strerror}"
+    return "" if done.returncode == 0 else (done.stderr.strip() or "pactl failed")
+
+
+def set_volume(sink: str, percent: int) -> str:
+    """Sets a sink's volume (0 to 150%); returns an error message, or "" on success."""
+    return _pactl("set-sink-volume", sink, f"{max(0, min(150, int(percent)))}%")
+
+
+def set_mute(sink: str, muted: bool) -> str:
+    return _pactl("set-sink-mute", sink, "1" if muted else "0")

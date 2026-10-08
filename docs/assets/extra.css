@@ -324,9 +324,15 @@ img.terminal {
   align-items: center;
 }
 
+.tc-split--flip {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+}
+
 .tc-split--flip > div {
   order: 2;
 }
+
+.tc-shot-link { display: block; }
 
 .tc-shot {
   width: 100%;

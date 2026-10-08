@@ -51,7 +51,7 @@ Chacun de ces problèmes a une solution perdue dans un fil de forum. tuxcast les
 
 | Commande | |
 | --- | --- |
-| `tuxcast ui` | Ouvre un tableau de bord local pour tout le reste : vérifications avec correctifs en un clic, aperçu visuel de tes pages Stream Deck converties, routage audio |
+| `tuxcast ui` | Ouvre une régie pour tout le reste : voyant « prêt à passer en live », ton Stream Deck et ses pages, table de mixage avec faders, correctifs en un clic |
 | `tuxcast doctor` | Vérifie le serveur d'affichage, l'audio, l'encodeur GPU, OBS, le Stream Deck, Discord, Spotify et le réseau. Chaque problème est accompagné de son correctif |
 | `tuxcast convert` | Transforme les exports Elgato `.streamDeckProfile` en pages [StreamController](https://streamcontroller.core447.com/) : images, dossiers, multi-actions, raccourcis (AZERTY et QWERTZ gérés), touches OBS, Discord et Twitch |
 | `tuxcast bridge discord` | Rend le socket de Discord (snap, Vesktop, natif) visible aux applis Flatpak, et recrée le pont à chaque connexion |
@@ -60,7 +60,10 @@ Chacun de ces problèmes a une solution perdue dans un fil de forum. tuxcast les
 | `tuxcast patch` | Réapplique les modifications que tu as faites dans les fichiers d'une appli à chaque fois qu'une mise à jour les efface |
 
 <p align="center">
-  <img src="docs/assets/ui-convert.png" alt="Le tableau de bord de tuxcast affiche l'aperçu d'un profil Elgato converti, touche par touche" width="820">
+  <a href="https://achedon12.github.io/tuxcast/demo/index.html">
+    <img src="docs/assets/ui-desk.png" alt="Le tableau de bord de tuxcast : le voyant, le Stream Deck et ses pages, les vérifications et la table de mixage" width="900">
+  </a><br>
+  <sub><a href="https://achedon12.github.io/tuxcast/demo/index.html">Essayer la démo en ligne</a>, sans rien installer</sub>
 </p>
 
 ## Installation

@@ -126,3 +126,36 @@ def test_old_uploads_are_dropped(dashboard, tmp_path):
                 headers={"X-Filename": "p.streamDeckProfile"})[1]["upload"] for _ in range(12)]
     assert len(dashboard.uploads) == 10
     assert call(dashboard, "POST", "/api/convert", {"upload": ids[0]})[0] == 404
+
+
+def test_deck_shows_streamcontroller_pages(dashboard, tmp_path):
+    image = tmp_path / "key.png"
+    image.write_bytes(b"\x89PNG\r\n\x1a\n" + b"0" * 20)
+    secret = tmp_path / "secret.txt"
+    secret.write_text("not an image")
+    pages = tmp_path / "pages"
+    pages.mkdir()
+    (pages / "Main.json").write_text(json.dumps({"keys": {
+        "0x0": {"states": {"0": {"labels": {"bottom": {"text": "Live"}}, "media": {"path": str(image)}}}},
+        "1x0": {"states": {"0": {"labels": {}, "media": {"path": str(secret)}}}},
+        "bad": {"states": {}},
+    }}))
+    status, data, _ = call(dashboard, "GET", "/api/deck")
+    assert status == 200
+    [page] = data["pages"]
+    keys = {(k["column"], k["row"]): k for k in page["keys"]}
+    assert keys[(0, 0)]["label"] == "Live" and keys[(0, 0)]["image"].startswith("data:image/png;base64,")
+    assert keys[(1, 0)]["image"] == ""  # only real images are ever sent
+
+
+def test_volume_and_mute_are_validated(dashboard, monkeypatch):
+    from tuxcast import audio
+
+    calls = []
+    monkeypatch.setattr(audio, "set_volume", lambda sink, volume: calls.append((sink, volume)) or "")
+    monkeypatch.setattr(audio, "set_mute", lambda sink, muted: calls.append((sink, muted)) or "")
+    assert call(dashboard, "POST", "/api/audio/volume", {"sink": "tuxcast_game", "volume": 80})[0] == 200
+    assert call(dashboard, "POST", "/api/audio/mute", {"sink": "tuxcast_game", "muted": True})[0] == 200
+    assert call(dashboard, "POST", "/api/audio/volume", {"sink": "a b", "volume": 80})[0] == 400
+    assert call(dashboard, "POST", "/api/audio/volume", {"sink": "x", "volume": "loud"})[0] == 400
+    assert calls == [("tuxcast_game", 80), ("tuxcast_game", True)]

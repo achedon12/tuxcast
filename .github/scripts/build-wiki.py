@@ -110,8 +110,10 @@ def rewrite_link(source: str, image: str, label: str, target: str) -> str:
     path, _, anchor = target.partition("#")
     resolved = (Path(source).parent / path).as_posix()
     resolved = re.sub(r"[^/]+/\.\./", "", resolved).removeprefix("./")
-    if image or not resolved.endswith(".md"):
+    if image:
         return f"{image}[{label}]({RAW}/docs/{resolved})"
+    if not resolved.endswith(".md"):  # a page of the website itself, such as the live demo
+        return f"[{label}]({SITE}/{resolved}{'#' + anchor if anchor else ''})"
     page = PAGES.get(resolved)
     if page is None:
         return f"[{label}]({SITE}/{resolved.removesuffix('.md').removesuffix('index')}/)"

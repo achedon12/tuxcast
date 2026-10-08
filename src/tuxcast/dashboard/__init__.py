@@ -22,7 +22,7 @@ from importlib import resources
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
-from tuxcast import __version__, audio, bridge, deck, doctor, patch, paths, systemd
+from tuxcast import __version__, audio, bridge, deck, doctor, patch, paths, streamcontroller, systemd
 from tuxcast.convert import ConversionError, convert, keymap
 from tuxcast.system import System
 
@@ -33,7 +33,9 @@ STATIC = {
     "/app.css": ("app.css", "text/css; charset=utf-8"),
     "/app.js": ("app.js", "text/javascript; charset=utf-8"),
     "/logo.svg": ("logo.svg", "image/svg+xml"),
-    "/bricolage.ttf": ("bricolage.ttf", "font/ttf"),
+    **{f"/fonts/{name}.woff2": (f"fonts/{name}.woff2", "font/woff2") for name in (
+        "Barlow-Regular", "Barlow-Medium", "Barlow-SemiBold", "Barlow-Bold",
+        "BarlowCondensed-SemiBold", "BarlowCondensed-Bold")},
 }
 SECURITY_HEADERS = {
     "Content-Security-Policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; "
@@ -76,6 +78,8 @@ class Dashboard:
             ("POST", "/api/audio/setup"): self.audio_setup,
             ("POST", "/api/audio/remove"): self.audio_remove,
             ("POST", "/api/audio/route"): self.audio_route,
+            ("POST", "/api/audio/volume"): self.audio_volume,
+            ("POST", "/api/audio/mute"): self.audio_mute,
             ("GET", "/api/discord"): self.discord,
             ("POST", "/api/discord"): self.discord_fix,
             ("GET", "/api/patches"): self.patches,
@@ -108,8 +112,10 @@ class Dashboard:
     def deck(self, _body: dict) -> dict:
         system = self.system_factory()
         return {
-            "decks": [{"name": d.name, "node": d.node, "serial": d.serial, "accessible": deck.accessible(system, d)}
-                      for d in deck.decks(system)],
+            "decks": [{"name": d.name, "node": d.node, "serial": d.serial, "accessible": deck.accessible(system, d),
+                       "columns": d.grid[0], "rows": d.grid[1]} for d in deck.decks(system)],
+            "pages": [{"name": p.name, "keys": [vars(k) for k in p.keys]}
+                      for p in streamcontroller.pages(self.pages_dir)],
             "udev": deck.UDEV_RULE,
             "udevPath": str(deck.UDEV_RULE_PATH),
             "pagesDir": str(self.pages_dir),
@@ -169,15 +175,29 @@ class Dashboard:
 
     def audio(self, _body: dict) -> dict:
         system = self.system_factory()
-        live = audio.live_sinks(system)
+        states = audio.sink_states(system)
+        default = audio.default_sink(system)
+        streams = audio.playing(system)
+        strips = []
+        for state in states:
+            ours = state.name.startswith(audio.PREFIX)
+            if not ours and state.name != default:
+                continue
+            strips.append({
+                "index": state.index, "name": state.name, "ours": ours, "default": state.name == default,
+                "label": audio.Sink(state.name.removeprefix(audio.PREFIX)).description.removeprefix("Stream · ")
+                if ours else "Your output",
+                "detail": state.description, "volume": state.volume, "muted": state.muted,
+                "apps": [{"index": s.index, "application": s.application} for s in streams if s.sink == state.index],
+            })
+        strips.sort(key=lambda strip: (strip["default"], strip["name"]))  # your output goes last, like a master
         return {
             "configured": audio.configured(),
-            "live": [name for name in live if name.startswith(audio.PREFIX)],
             "defaults": audio.DEFAULT_SINKS,
             "descriptions": {key: audio.Sink(key).description for key in audio.DESCRIPTIONS},
-            "streams": [{"index": s.index, "application": s.application, "sink": s.sink}
-                        for s in audio.playing(system)],
-            "sinks": sinks_by_index(system),
+            "strips": strips,
+            "elsewhere": [{"index": s.index, "application": s.application} for s in streams
+                          if s.sink not in {strip["index"] for strip in strips}],
         }
 
     def audio_setup(self, body: dict) -> dict:
@@ -201,9 +221,31 @@ class Dashboard:
 
     def audio_route(self, body: dict) -> dict:
         stream, sink = str(body.get("stream", "")), str(body.get("sink", ""))
-        if not re.fullmatch(r"[A-Za-z0-9_.-]{1,128}", sink):
+        if not re.fullmatch(r"[A-Za-z0-9_.:-]{1,160}", sink):
             raise ApiError(HTTPStatus.BAD_REQUEST, "Invalid sink name.")
         error = audio.move(stream, sink)
+        if error:
+            raise ApiError(HTTPStatus.UNPROCESSABLE_ENTITY, error)
+        return {"ok": True}
+
+    def _sink(self, body: dict) -> str:
+        sink = str(body.get("sink", ""))
+        if not re.fullmatch(r"[A-Za-z0-9_.:-]{1,160}", sink):
+            raise ApiError(HTTPStatus.BAD_REQUEST, "Invalid sink name.")
+        return sink
+
+    def audio_volume(self, body: dict) -> dict:
+        try:
+            volume = int(body.get("volume"))
+        except (TypeError, ValueError) as exc:
+            raise ApiError(HTTPStatus.BAD_REQUEST, "Volume must be a number.") from exc
+        error = audio.set_volume(self._sink(body), volume)
+        if error:
+            raise ApiError(HTTPStatus.UNPROCESSABLE_ENTITY, error)
+        return {"ok": True}
+
+    def audio_mute(self, body: dict) -> dict:
+        error = audio.set_mute(self._sink(body), bool(body.get("muted")))
         if error:
             raise ApiError(HTTPStatus.UNPROCESSABLE_ENTITY, error)
         return {"ok": True}

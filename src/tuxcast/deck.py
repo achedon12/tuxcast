@@ -27,6 +27,14 @@ PRODUCTS = {
     "00a5": "Stream Deck MK.2 (scissor keys)",
 }
 
+# keys per row and rows, by product id
+GRIDS = {
+    "0060": (5, 3), "006d": (5, 3), "0080": (5, 3), "00a5": (5, 3),
+    "0063": (3, 2), "0090": (3, 2),
+    "006c": (8, 4), "008f": (8, 4),
+    "0084": (4, 2), "009a": (4, 2), "0086": (3, 1),
+}
+
 # Grants the logged-in user access to every Elgato device, which is what
 # StreamController and the python-elgato-streamdeck library need.
 UDEV_RULE = (
@@ -50,6 +58,10 @@ class Deck:
     @property
     def name(self) -> str:
         return PRODUCTS[self.product_id]
+
+    @property
+    def grid(self) -> tuple[int, int]:
+        return GRIDS.get(self.product_id, (5, 3))
 
     @property
     def node(self) -> str:

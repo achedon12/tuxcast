@@ -4,28 +4,45 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>tuxcast</title>
-  <link rel="icon" href="/logo.svg">
-  <link rel="stylesheet" href="/app.css">
-  <script src="/app.js" defer></script>
+  <link rel="icon" href="logo.svg">
+  <link rel="stylesheet" href="app.css">
+  <script src="app.js" defer></script>
 </head>
 <body>
-  <a class="skip" href="#main">Skip to content</a>
-  <div class="shell">
-    <nav class="side" aria-label="Sections">
-      <a class="brand" href="#overview"><img src="/logo.svg" alt="" width="36" height="36"><span>tuxcast</span></a>
-      <ul class="nav">
-        <li><a href="#overview" data-view="overview"><span class="dot" data-for="overview"></span>Overview</a></li>
-        <li><a href="#deck" data-view="deck"><span class="dot" data-for="deck"></span>Stream Deck</a></li>
-        <li><a href="#audio" data-view="audio"><span class="dot" data-for="audio"></span>Audio</a></li>
-        <li><a href="#discord" data-view="discord"><span class="dot" data-for="discord"></span>Discord</a></li>
-        <li><a href="#patches" data-view="patches"><span class="dot" data-for="patches"></span>Patches</a></li>
-      </ul>
-      <p class="side__foot">Runs on this machine only. <span id="version"></span></p>
-    </nav>
-    <main id="main" tabindex="-1">
-      <div id="view" aria-live="polite"></div>
-    </main>
-  </div>
-  <div id="toast" role="status" aria-live="polite"></div>
+  <header class="bar">
+    <div class="brand"><img src="logo.svg" alt="">tuxcast<small>dashboard</small></div>
+    <div class="tally" id="tally" role="status" data-state=""><span class="tally__lamp"></span><span id="tally-text">Checking your setup…</span></div>
+    <div class="bar__end"><span id="version"></span><button class="btn" type="button" id="recheck">Check again</button></div>
+  </header>
+
+  <main class="desk" id="desk">
+    <section class="dock dock--deck" aria-labelledby="deck-title">
+      <header class="dock__head"><h2 id="deck-title">Stream Deck</h2><span class="dock__meta" id="deck-meta"></span><div class="dock__tools" id="deck-tools"></div></header>
+      <div class="dock__body" id="deck"><p class="loading">Looking for your deck…</p></div>
+    </section>
+    <section class="dock dock--checks" aria-labelledby="checks-title">
+      <header class="dock__head"><h2 id="checks-title">Checks</h2><span class="dock__meta">Click one for details and fixes</span></header>
+      <div class="dock__body" id="checks"><p class="loading">Running the doctor…</p></div>
+    </section>
+    <section class="dock dock--mixer" aria-labelledby="mixer-title">
+      <header class="dock__head"><h2 id="mixer-title">Audio mixer</h2><span class="dock__meta" id="mixer-meta"></span><div class="dock__tools" id="mixer-tools"></div></header>
+      <div class="dock__body" id="mixer"><p class="loading">Reading PipeWire…</p></div>
+    </section>
+    <section class="dock dock--discord" aria-labelledby="discord-title">
+      <header class="dock__head"><h2 id="discord-title">Discord</h2></header>
+      <div id="discord" class="dock__body"><p class="loading">Looking for Discord…</p></div>
+    </section>
+    <section class="dock dock--patches" aria-labelledby="patches-title">
+      <header class="dock__head"><h2 id="patches-title">Patches</h2><span class="dock__meta">Fixes that survive app updates</span></header>
+      <div id="patches" class="dock__body"><p class="loading">Reading patches…</p></div>
+    </section>
+  </main>
+
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="drawer" id="drawer" hidden aria-labelledby="drawer-title" role="dialog" aria-modal="true">
+    <header class="drawer__head"><h2 id="drawer-title"></h2><button class="btn btn--ghost" type="button" id="drawer-close">Close</button></header>
+    <div class="drawer__body" id="drawer-body"></div>
+  </aside>
+  <div id="toasts" aria-live="polite"></div>
 </body>
 </html>

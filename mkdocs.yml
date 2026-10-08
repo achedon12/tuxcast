@@ -5,7 +5,7 @@ site_author: achedon12
 repo_url: https://github.com/achedon12/tuxcast
 repo_name: achedon12/tuxcast
 edit_uri: edit/main/docs/
-copyright: MIT licensed · Made for streamers who chose Linux
+copyright: Released under the MIT License. Copyright &copy; 2026 Achedon12
 
 theme:
   name: material
@@ -45,10 +45,21 @@ theme:
     - content.action.edit
     - toc.follow
 
+plugins:
+  - search
+  - git-revision-date-localized:
+      type: date
+      fallback_to_build_date: true
+
 extra_css:
   - assets/extra.css
 
 extra:
+  # Set these to turn on search verification and cookieless Matomo analytics, as on the Golem website.
+  google_site_verification: ""
+  matomo:
+    url: https://matomo.leoderoin.fr/
+    site_id: ""
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/achedon12/tuxcast
@@ -106,3 +117,9 @@ nav:
       - FAQ: reference/faq.md
       - Contributing: reference/contributing.md
       - Changelog: reference/changelog.md
+  - Links:
+      - Live demo: demo/index.html
+      - Releases: https://github.com/achedon12/tuxcast/releases
+      - Issues: https://github.com/achedon12/tuxcast/issues
+      - Discussions: https://github.com/achedon12/tuxcast/discussions
+      - Source code: https://github.com/achedon12/tuxcast

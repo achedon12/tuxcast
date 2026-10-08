@@ -10,6 +10,7 @@ from __future__ import annotations
 import os
 import shutil
 import subprocess
+import time
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -80,11 +81,25 @@ class System:
         return Path(value) if value else Path(f"/run/user/{os.getuid()}")
 
     def flatpak_apps(self) -> set[str]:
-        out = self.run("flatpak", "list", "--app", "--columns=application")
+        out = self._listing("flatpak", "list", "--app", "--columns=application")
         return set(out.stdout.split()) if out and out.ok else set()
 
     def snaps(self) -> set[str]:
-        out = self.run("snap", "list")
+        out = self._listing("snap", "list")
         if not out or not out.ok:
             return set()
         return {line.split()[0] for line in out.stdout.splitlines()[1:] if line.strip()}
+
+    def _listing(self, *args: str) -> Output | None:
+        """Installed packages: slow to list (snap takes seconds), so shared between probes for a while."""
+        key = (str(self.root), self.runner, args)
+        cached = _LISTINGS.get(key)
+        if cached and time.monotonic() - cached[0] < LISTING_TTL:
+            return cached[1]
+        out = self.run(*args, timeout=20.0)
+        _LISTINGS[key] = (time.monotonic(), out)
+        return out
+
+
+LISTING_TTL = 30.0
+_LISTINGS: dict[tuple, tuple[float, Output | None]] = {}

@@ -12,9 +12,11 @@ The first release: the problems every Linux streamer hits, each solved by one co
 
 ### Added
 
-- `tuxcast ui` opens a local dashboard for everything below: the doctor's checks with one-click
-  fixes, a key-by-key preview of converted Stream Deck pages, audio sinks and routing, the Discord
-  bridge and patches. It listens on 127.0.0.1 only and requires the token it prints.
+- `tuxcast ui` opens a control desk for everything below: a go-live tally, the Stream Deck with
+  StreamController's real pages and a key-by-key preview of dropped Elgato profiles, the doctor's
+  checks with one-click fixes, an audio mixer with faders, mute and drag-and-drop app routing, the
+  Discord bridge and patches. It listens on 127.0.0.1 only and requires the token it prints. The
+  website has a live demo of it.
 - `tuxcast doctor` checks a streaming setup in eight areas (display server, audio, GPU
   encoding, OBS, Stream Deck, Discord, Spotify, network) and prints the fix for each
   problem. `--json` for scripts, `--only` to focus on some areas.

@@ -3,7 +3,7 @@ name: Docs
 on:
   push:
     branches: [main]
-    paths: ['docs/**', 'mkdocs.yml', '.github/workflows/docs.yml', '.github/scripts/build-wiki.py']
+    paths: ['docs/**', 'overrides/**', 'mkdocs.yml', 'src/tuxcast/dashboard/static/**', '.github/demo/**', '.github/workflows/docs.yml', '.github/scripts/build-wiki.py', '.github/scripts/build-demo.py']
   workflow_dispatch:
 
 concurrency:
@@ -21,7 +21,9 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.14"
-      - run: pip install "mkdocs<2" mkdocs-material   # MkDocs 2 drops the plugin system Material needs
+      - run: pip install "mkdocs<2" mkdocs-material mkdocs-git-revision-date-localized-plugin   # MkDocs 2 drops the plugin system Material needs
+      - name: Build the dashboard demo
+        run: python3 .github/scripts/build-demo.py
       - run: mkdocs build --strict
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5

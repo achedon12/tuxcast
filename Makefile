@@ -10,7 +10,7 @@ help: ## Show this help
 
 $(BIN)/tuxcast:
 	$(PYTHON) -m venv $(VENV)
-	$(BIN)/pip install -q -e . ruff pytest "mkdocs<2" mkdocs-material
+	$(BIN)/pip install -q -e . ruff pytest "mkdocs<2" mkdocs-material mkdocs-git-revision-date-localized-plugin
 
 install: $(BIN)/tuxcast ## Create .venv with tuxcast and the dev tools
 
@@ -24,9 +24,11 @@ test: install ## Run the test suite
 	$(BIN)/pytest
 
 docs: install ## Build the website into site/
+	$(PYTHON) .github/scripts/build-demo.py
 	$(BIN)/mkdocs build --strict
 
 serve: install ## Preview the website on http://127.0.0.1:8000
+	$(PYTHON) .github/scripts/build-demo.py
 	$(BIN)/mkdocs serve
 
 wiki: ## Generate the wiki pages into wiki/
