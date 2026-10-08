@@ -5,6 +5,7 @@
 <p align="center">
   <a href="https://github.com/achedon12/tuxcast/actions/workflows/ci.yml"><img src="https://github.com/achedon12/tuxcast/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://github.com/achedon12/tuxcast/releases"><img src="https://img.shields.io/github/v/release/achedon12/tuxcast?color=8b5cf6&label=release" alt="Dernière version"></a>
+  <a href="https://github.com/achedon12/tuxcast/releases"><img src="https://img.shields.io/github/downloads/achedon12/tuxcast/total?color=22c55e&label=downloads" alt="Téléchargements"></a>
   <img src="https://img.shields.io/badge/python-3.11%2B-3776ab" alt="Python 3.11+">
   <img src="https://img.shields.io/badge/d%C3%A9pendances-0-22c55e" alt="Aucune dépendance">
   <a href="LICENSE"><img src="https://img.shields.io/github/license/achedon12/tuxcast?color=blue" alt="Licence MIT"></a>
