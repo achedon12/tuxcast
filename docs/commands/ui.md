@@ -14,6 +14,10 @@ tuxcast dashboard
 
 Your browser opens on the address. Stop the dashboard with Ctrl+C.
 
+<video controls preload="none" playsinline poster="../../assets/tuxcast-ui.jpg" width="1920" height="1080" style="width:100%;height:auto;border-radius:10px">
+  <source src="../../assets/tuxcast-ui.mp4" type="video/mp4">
+</video>
+
 ![The tuxcast dashboard: the tally, a Stream Deck with its pages, the checks and the audio mixer](../assets/ui-desk.png){ .terminal }
 
 ## Try it
