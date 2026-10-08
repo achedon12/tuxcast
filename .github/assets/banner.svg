@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="300" viewBox="0 0 1280 300" role="img" aria-label="tuxcast: the toolkit for streaming on Linux">
+  <defs>
+    <linearGradient id="page" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1e1033"/>
+      <stop offset="1" stop-color="#0b0a14"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.85" cy="0.1" r="0.7">
+      <stop offset="0" stop-color="#7c3aed" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1280" height="300" rx="16" fill="url(#page)"/>
+  <rect width="1280" height="300" rx="16" fill="url(#glow)"/>
+  <svg x="70" y="80" width="140" height="140" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#5b21b6"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <!-- a penguin's head, seen as a broadcast dish -->
+  <ellipse cx="64" cy="72" rx="34" ry="36" fill="#111827"/>
+  <ellipse cx="64" cy="80" rx="23" ry="26" fill="#f9fafb"/>
+  <circle cx="53" cy="62" r="6" fill="#f9fafb"/>
+  <circle cx="75" cy="62" r="6" fill="#f9fafb"/>
+  <circle cx="54" cy="63" r="3" fill="#111827"/>
+  <circle cx="74" cy="63" r="3" fill="#111827"/>
+  <path d="M56 74 Q64 82 72 74 Q64 70 56 74 Z" fill="#f59e0b"/>
+  <!-- live waves -->
+  <path d="M94 30 a14 14 0 0 1 0 20" fill="none" stroke="#f59e0b" stroke-width="5" stroke-linecap="round"/>
+  <path d="M102 22 a26 26 0 0 1 0 36" fill="none" stroke="#f59e0b" stroke-width="5" stroke-linecap="round" opacity=".75"/>
+  <circle cx="88" cy="40" r="5" fill="#ef4444"/>
+</svg>
+  <text x="240" y="118" font-family="Inter, 'Segoe UI', Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif" font-size="64" font-weight="800" fill="#ffffff" letter-spacing="-1.5">tuxcast</text>
+  <text x="242" y="160" font-family="Inter, 'Segoe UI', Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif" font-size="24" fill="#c4b5fd">The toolkit for streaming on Linux</text>
+  <rect x="242" y="192" width="79" height="30" rx="15" fill="#ffffff" fill-opacity=".07" stroke="#a78bfa" stroke-opacity=".5"/><text x="281.5" y="213" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Menlo, Consolas, monospace" font-size="15" fill="#e9d5ff">doctor</text>
+  <rect x="333" y="192" width="89" height="30" rx="15" fill="#ffffff" fill-opacity=".07" stroke="#a78bfa" stroke-opacity=".5"/><text x="377.5" y="213" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Menlo, Consolas, monospace" font-size="15" fill="#e9d5ff">convert</text>
+  <rect x="434" y="192" width="79" height="30" rx="15" fill="#ffffff" fill-opacity=".07" stroke="#a78bfa" stroke-opacity=".5"/><text x="473.5" y="213" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Menlo, Consolas, monospace" font-size="15" fill="#e9d5ff">bridge</text>
+  <rect x="525" y="192" width="70" height="30" rx="15" fill="#ffffff" fill-opacity=".07" stroke="#a78bfa" stroke-opacity=".5"/><text x="560.0" y="213" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Menlo, Consolas, monospace" font-size="15" fill="#e9d5ff">audio</text>
+  <rect x="607" y="192" width="61" height="30" rx="15" fill="#ffffff" fill-opacity=".07" stroke="#a78bfa" stroke-opacity=".5"/><text x="637.5" y="213" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Menlo, Consolas, monospace" font-size="15" fill="#e9d5ff">deck</text>
+  <rect x="680" y="192" width="70" height="30" rx="15" fill="#ffffff" fill-opacity=".07" stroke="#a78bfa" stroke-opacity=".5"/><text x="715.0" y="213" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Menlo, Consolas, monospace" font-size="15" fill="#e9d5ff">patch</text>
+</svg>

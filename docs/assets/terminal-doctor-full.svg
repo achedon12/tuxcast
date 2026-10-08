@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1236" height="1114" viewBox="0 0 1236 1114" role="img" aria-label="tuxcast doctor">
+<rect width="1236" height="1114" rx="10" fill="#0f1117"/>
+<path d="M0 10 a10 10 0 0 1 10 -10 h1216 a10 10 0 0 1 10 10 v24 h-1236 z" fill="#1c1f2a"/>
+<circle cx="22" cy="17.0" r="6" fill="#ff5f57"/><circle cx="42" cy="17.0" r="6" fill="#febc2e"/><circle cx="62" cy="17.0" r="6" fill="#28c840"/>
+<text x="618.0" y="22.0" text-anchor="middle" fill="#9ca3af" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13">tuxcast doctor</text>
+<g font-family="'JetBrains Mono', 'DejaVu Sans Mono', 'Fira Code', ui-monospace, Menlo, Consolas, monospace" font-size="14">
+<text x="22" y="66" xml:space="preserve"><tspan fill="#4ade80">$</tspan><tspan fill="#e5e7eb"> tuxcast doctor</tspan></text>
+<text x="22" y="86" xml:space="preserve"><tspan fill="#e5e7eb" font-weight="700">tuxcast doctor </tspan><tspan fill="#9ca3af" font-weight="700">v0.1.0</tspan></text>
+<text x="22" y="106" xml:space="preserve"></text>
+<text x="22" y="126" xml:space="preserve"><tspan fill="#22d3ee" font-weight="700">Display server</tspan></text>
+<text x="22" y="146" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#4ade80"><tspan font-family="'DejaVu Sans Mono', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', sans-serif">✔</tspan></tspan><tspan fill="#e5e7eb"> X11 session (XFCE)</tspan></text>
+<text x="22" y="166" xml:space="preserve"></text>
+<text x="22" y="186" xml:space="preserve"><tspan fill="#22d3ee" font-weight="700">Audio</tspan></text>
+<text x="22" y="206" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#4ade80"><tspan font-family="'DejaVu Sans Mono', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', sans-serif">✔</tspan></tspan><tspan fill="#e5e7eb"> PipeWire is running</tspan></text>
+<text x="22" y="226" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#4ade80"><tspan font-family="'DejaVu Sans Mono', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', sans-serif">✔</tspan></tspan><tspan fill="#e5e7eb"> WirePlumber answers</tspan></text>
+<text x="22" y="246" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#60a5fa">•</tspan><tspan fill="#e5e7eb"> Your stream audio is a single mix</tspan></text>
+<text x="22" y="266" xml:space="preserve"><tspan fill="#9ca3af">      Game, music, Discord and alerts all reach OBS together, so you cannot mute the music in your VODs or lower Discord alone.</tspan></text>
+<text x="22" y="286" xml:space="preserve"><tspan fill="#e5e7eb">      </tspan><tspan fill="#22d3ee">fix:</tspan><tspan fill="#e5e7eb"> tuxcast audio setup</tspan></text>
+<text x="22" y="306" xml:space="preserve"></text>
+<text x="22" y="326" xml:space="preserve"><tspan fill="#22d3ee" font-weight="700">Video encoding</tspan></text>
+<text x="22" y="346" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#4ade80"><tspan font-family="'DejaVu Sans Mono', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', sans-serif">✔</tspan></tspan><tspan fill="#e5e7eb"> AMD GPU (card1)</tspan></text>
+<text x="22" y="366" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#60a5fa">•</tspan><tspan fill="#e5e7eb"> vainfo is not installed, VAAPI encoding was not verified</tspan></text>
+<text x="22" y="386" xml:space="preserve"><tspan fill="#e5e7eb">      </tspan><tspan fill="#22d3ee">fix:</tspan><tspan fill="#e5e7eb"> Install vainfo.</tspan></text>
+<text x="22" y="406" xml:space="preserve"></text>
+<text x="22" y="426" xml:space="preserve"><tspan fill="#22d3ee" font-weight="700">OBS Studio</tspan></text>
+<text x="22" y="446" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#4ade80"><tspan font-family="'DejaVu Sans Mono', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', sans-serif">✔</tspan></tspan><tspan fill="#e5e7eb"> OBS 32.2.0 (native package)</tspan></text>
+<text x="22" y="466" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#4ade80"><tspan font-family="'DejaVu Sans Mono', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', sans-serif">✔</tspan></tspan><tspan fill="#e5e7eb"> obs-websocket is on (port 4455, password protected)</tspan></text>
+<text x="22" y="486" xml:space="preserve"></text>
+<text x="22" y="506" xml:space="preserve"><tspan fill="#22d3ee" font-weight="700">Stream Deck</tspan></text>
+<text x="22" y="526" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#4ade80"><tspan font-family="'DejaVu Sans Mono', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', sans-serif">✔</tspan></tspan><tspan fill="#e5e7eb"> Stream Deck Mini (v2) on /dev/bus/usb/007/052</tspan></text>
+<text x="22" y="546" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#4ade80"><tspan font-family="'DejaVu Sans Mono', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', sans-serif">✔</tspan></tspan><tspan fill="#e5e7eb"> StreamController is installed (Flathub)</tspan></text>
+<text x="22" y="566" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#60a5fa">•</tspan><tspan fill="#e5e7eb"> Coming from Windows or macOS?</tspan></text>
+<text x="22" y="586" xml:space="preserve"><tspan fill="#9ca3af">      Your Elgato profiles can be converted instead of rebuilt by hand.</tspan></text>
+<text x="22" y="606" xml:space="preserve"><tspan fill="#e5e7eb">      </tspan><tspan fill="#22d3ee">fix:</tspan><tspan fill="#e5e7eb"> tuxcast convert MyProfile.streamDeckProfile</tspan></text>
+<text x="22" y="626" xml:space="preserve"></text>
+<text x="22" y="646" xml:space="preserve"><tspan fill="#22d3ee" font-weight="700">Discord</tspan></text>
+<text x="22" y="666" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#4ade80"><tspan font-family="'DejaVu Sans Mono', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', sans-serif">✔</tspan></tspan><tspan fill="#e5e7eb"> Discord (snap)</tspan></text>
+<text x="22" y="686" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#4ade80"><tspan font-family="'DejaVu Sans Mono', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', sans-serif">✔</tspan></tspan><tspan fill="#e5e7eb"> Discord is running</tspan></text>
+<text x="22" y="706" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#4ade80"><tspan font-family="'DejaVu Sans Mono', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', sans-serif">✔</tspan></tspan><tspan fill="#e5e7eb"> The Discord bridge is in place</tspan></text>
+<text x="22" y="726" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#4ade80"><tspan font-family="'DejaVu Sans Mono', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', sans-serif">✔</tspan></tspan><tspan fill="#e5e7eb"> StreamController (Flatpak) can reach Discord</tspan></text>
+<text x="22" y="746" xml:space="preserve"></text>
+<text x="22" y="766" xml:space="preserve"><tspan fill="#22d3ee" font-weight="700">Spotify</tspan></text>
+<text x="22" y="786" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#4ade80"><tspan font-family="'DejaVu Sans Mono', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', sans-serif">✔</tspan></tspan><tspan fill="#e5e7eb"> Spotify (Flathub)</tspan></text>
+<text x="22" y="806" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#60a5fa">•</tspan><tspan fill="#e5e7eb"> Spotify is not running</tspan></text>
+<text x="22" y="826" xml:space="preserve"><tspan fill="#9ca3af">      Remote control was not tested.</tspan></text>
+<text x="22" y="846" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#60a5fa">•</tspan><tspan fill="#e5e7eb"> Playing Spotify on stream breaks Spotify&#x27;s terms</tspan></text>
+<text x="22" y="866" xml:space="preserve"><tspan fill="#9ca3af">      Spotify&#x27;s terms forbid public broadcast whatever the track&#x27;s license, and many tracks trigger DMCA strikes or YouTube Content ID claims.</tspan></text>
+<text x="22" y="886" xml:space="preserve"><tspan fill="#e5e7eb">      </tspan><tspan fill="#22d3ee">fix:</tspan><tspan fill="#e5e7eb"> See the music guide: https://achedon12.github.io/tuxcast/guides/music/</tspan></text>
+<text x="22" y="906" xml:space="preserve"></text>
+<text x="22" y="926" xml:space="preserve"><tspan fill="#22d3ee" font-weight="700">Network</tspan></text>
+<text x="22" y="946" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#fbbf24"><tspan font-family="'DejaVu Sans Mono', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', sans-serif">⚠</tspan></tspan><tspan fill="#e5e7eb"> You stream over Wi-Fi (wlp194s0)</tspan></text>
+<text x="22" y="966" xml:space="preserve"><tspan fill="#9ca3af">      Wi-Fi drops packets in bursts. Twitch reports it as an unstable bitrate, and viewers see buffering even when your upload speed is high.</tspan></text>
+<text x="22" y="986" xml:space="preserve"><tspan fill="#e5e7eb">      </tspan><tspan fill="#22d3ee">fix:</tspan><tspan fill="#e5e7eb"> Use an Ethernet cable, even through a powerline adapter.</tspan></text>
+<text x="22" y="1006" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#60a5fa">•</tspan><tspan fill="#e5e7eb"> Check your upload before going live</tspan></text>
+<text x="22" y="1026" xml:space="preserve"><tspan fill="#9ca3af">      Keep the stream bitrate under 75% of your measured upload: 6000 kbps needs about 8 Mb/s.</tspan></text>
+<text x="22" y="1046" xml:space="preserve"><tspan fill="#e5e7eb">      </tspan><tspan fill="#22d3ee">fix:</tspan><tspan fill="#e5e7eb"> Run a speed test, or the Twitch Inspector bandwidth test (inspector.twitch.tv).</tspan></text>
+<text x="22" y="1066" xml:space="preserve"></text>
+<text x="22" y="1086" xml:space="preserve"><tspan fill="#fbbf24" font-weight="700">1 warning</tspan><tspan fill="#e5e7eb">. Guides: https://achedon12.github.io/tuxcast/guides/</tspan></text>
+</g>
+</svg>

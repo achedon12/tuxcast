@@ -1,0 +1,6 @@
+# Elgato Stream Deck: let the logged-in user talk to the device.
+# Same rule as `tuxcast deck udev`. Install:
+#   sudo cp 70-streamdeck.rules /etc/udev/rules.d/
+#   sudo udevadm control --reload && sudo udevadm trigger
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0fd9", TAG+="uaccess"
+KERNEL=="hidraw*", ATTRS{idVendor}=="0fd9", TAG+="uaccess"

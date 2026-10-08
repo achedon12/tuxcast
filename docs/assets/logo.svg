@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="tuxcast">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#5b21b6"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <!-- a penguin's head, seen as a broadcast dish -->
+  <ellipse cx="64" cy="72" rx="34" ry="36" fill="#111827"/>
+  <ellipse cx="64" cy="80" rx="23" ry="26" fill="#f9fafb"/>
+  <circle cx="53" cy="62" r="6" fill="#f9fafb"/>
+  <circle cx="75" cy="62" r="6" fill="#f9fafb"/>
+  <circle cx="54" cy="63" r="3" fill="#111827"/>
+  <circle cx="74" cy="63" r="3" fill="#111827"/>
+  <path d="M56 74 Q64 82 72 74 Q64 70 56 74 Z" fill="#f59e0b"/>
+  <!-- live waves -->
+  <path d="M94 30 a14 14 0 0 1 0 20" fill="none" stroke="#f59e0b" stroke-width="5" stroke-linecap="round"/>
+  <path d="M102 22 a26 26 0 0 1 0 36" fill="none" stroke="#f59e0b" stroke-width="5" stroke-linecap="round" opacity=".75"/>
+  <circle cx="88" cy="40" r="5" fill="#ef4444"/>
+</svg>

@@ -1,0 +1,103 @@
+site_name: tuxcast
+site_url: https://achedon12.github.io/tuxcast/
+site_description: The toolkit for streaming on Linux. Diagnose your setup, convert Elgato Stream Deck profiles, bridge sandboxed apps and split your audio.
+site_author: achedon12
+repo_url: https://github.com/achedon12/tuxcast
+repo_name: achedon12/tuxcast
+edit_uri: edit/main/docs/
+copyright: MIT licensed · Made for streamers who chose Linux
+
+theme:
+  name: material
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+    - toc.follow
+
+extra_css:
+  - assets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/achedon12/tuxcast
+    - icon: fontawesome/brands/twitch
+      link: https://www.twitch.tv/achedon12
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path: [.]
+      check_paths: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Commands:
+      - commands/index.md
+      - doctor: commands/doctor.md
+      - convert: commands/convert.md
+      - bridge discord: commands/bridge.md
+      - audio: commands/audio.md
+      - deck: commands/deck.md
+      - patch: commands/patch.md
+  - Guides:
+      - guides/index.md
+      - Streaming on Linux in 2026: guides/streaming-on-linux.md
+      - OBS on Linux: guides/obs.md
+      - Stream Deck on Linux: guides/stream-deck.md
+      - Audio routing: guides/audio.md
+      - Discord and Spotify in sandboxes: guides/sandboxes.md
+      - Music without claims: guides/music.md
+      - Network: guides/network.md
+  - Reference:
+      - Elgato actions: reference/elgato-actions.md
+      - FAQ: reference/faq.md
+      - Contributing: reference/contributing.md
+      - Changelog: reference/changelog.md

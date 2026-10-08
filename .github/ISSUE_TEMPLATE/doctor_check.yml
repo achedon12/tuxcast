@@ -1,0 +1,23 @@
+name: 🩺 Idea for a doctor check
+description: A problem you hit while streaming on Linux that tuxcast doctor could have caught.
+labels: [doctor, enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What broke, and how it showed (error message, symptom on stream).
+    validations:
+      required: true
+  - type: textarea
+    id: detection
+    attributes:
+      label: How to detect it
+      description: A file, command or setting that shows the problem, if you found one.
+  - type: textarea
+    id: fix
+    attributes:
+      label: The fix
+      description: What solved it for you.
+    validations:
+      required: true

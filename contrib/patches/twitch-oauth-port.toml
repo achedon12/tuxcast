@@ -1,0 +1,18 @@
+# StreamController's Twitch plugin listens on port 3000 for its OAuth login, which clashes with
+# local web dev servers (Next.js, Vite, Rails…). This moves it to 6948.
+#
+# Install:  cp twitch-oauth-port.toml ~/.config/tuxcast/patches/ && tuxcast patch install
+# The plugin's Twitch application must allow the new redirect URI: http://localhost:6948/auth
+
+file = "~/.var/app/com.core447.StreamController/data/plugins/com_imdevinc_StreamControllerTwitchPlugin/constants.py"
+
+# Plugin updates delete and recreate the plugin folder, so watch its parent.
+watch = "~/.var/app/com.core447.StreamController/data/plugins"
+
+[[replace]]
+pattern = '^OAUTH_PORT = \d+$'
+with = "OAUTH_PORT = 6948"
+
+[[replace]]
+pattern = '^OAUTH_REDIRECT_URI = "http://localhost:\d+/auth"$'
+with = 'OAUTH_REDIRECT_URI = "http://localhost:6948/auth"'

@@ -1,0 +1,43 @@
+name: 🐛 Bug report
+description: Something tuxcast does is wrong, or a doctor check is mistaken.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time! The doctor output tells us most of what we need about your setup.
+  - type: input
+    id: command
+    attributes:
+      label: Command
+      description: The command you ran.
+      placeholder: tuxcast bridge discord --install
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Output of `tuxcast doctor --json`
+      description: Paths and app names only, no secrets. Remove anything you prefer to keep private.
+      render: json
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: tuxcast version
+      placeholder: tuxcast 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: distribution
+    attributes:
+      label: Distribution and desktop
+      placeholder: Ubuntu 26.04, GNOME, Wayland
+    validations:
+      required: true

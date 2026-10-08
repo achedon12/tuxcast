@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="951" height="374" viewBox="0 0 951 374" role="img" aria-label="tuxcast convert">
+<rect width="951" height="374" rx="10" fill="#0f1117"/>
+<path d="M0 10 a10 10 0 0 1 10 -10 h931 a10 10 0 0 1 10 10 v24 h-951 z" fill="#1c1f2a"/>
+<circle cx="22" cy="17.0" r="6" fill="#ff5f57"/><circle cx="42" cy="17.0" r="6" fill="#febc2e"/><circle cx="62" cy="17.0" r="6" fill="#28c840"/>
+<text x="475.5" y="22.0" text-anchor="middle" fill="#9ca3af" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13">tuxcast convert</text>
+<g font-family="'JetBrains Mono', 'DejaVu Sans Mono', 'Fira Code', ui-monospace, Menlo, Consolas, monospace" font-size="14">
+<text x="22" y="66" xml:space="preserve"><tspan fill="#4ade80">$</tspan><tspan fill="#e5e7eb"> tuxcast convert Streaming.streamDeckProfile</tspan></text>
+<text x="22" y="86" xml:space="preserve"><tspan fill="#e5e7eb" font-weight="700">Wrote 2 pages to ~/.var/app/com.core447.StreamController/data/pages</tspan></text>
+<text x="22" y="106" xml:space="preserve"><tspan fill="#e5e7eb">  • Streaming</tspan></text>
+<text x="22" y="126" xml:space="preserve"><tspan fill="#e5e7eb">  • Streaming - Scenes</tspan></text>
+<text x="22" y="146" xml:space="preserve"></text>
+<text x="22" y="166" xml:space="preserve"><tspan fill="#4ade80"><tspan font-family="'DejaVu Sans Mono', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols 2', sans-serif">✔</tspan></tspan><tspan fill="#e5e7eb"> 6/8 keys converted, 1 image copied (keyboard layout: fr)</tspan></text>
+<text x="22" y="186" xml:space="preserve"></text>
+<text x="22" y="206" xml:space="preserve"><tspan fill="#22d3ee" font-weight="700">Redo these by hand (2)</tspan></text>
+<text x="22" y="226" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#f87171">•</tspan><tspan fill="#e5e7eb"> Streaming [2,1] “Airhorn”: no StreamController equivalent for com.elgato.streamdeck.soundboard.playaudio</tspan></text>
+<text x="22" y="246" xml:space="preserve"><tspan fill="#e5e7eb">  </tspan><tspan fill="#f87171">•</tspan><tspan fill="#e5e7eb"> Streaming - Scenes [2,0] “Game”: opens C:\Games\Valorant.exe on Windows/macOS: set a Linux command</tspan></text>
+<text x="22" y="266" xml:space="preserve"></text>
+<text x="22" y="286" xml:space="preserve"><tspan fill="#22d3ee" font-weight="700">StreamController plugins these pages use</tspan></text>
+<text x="22" y="306" xml:space="preserve"><tspan fill="#e5e7eb">  Deck, Discord, OBS, Twitch  (install them from the StreamController store)</tspan></text>
+<text x="22" y="326" xml:space="preserve"></text>
+<text x="22" y="346" xml:space="preserve"><tspan fill="#e5e7eb">  Restart StreamController, then pick the page in its page list.</tspan></text>
+</g>
+</svg>

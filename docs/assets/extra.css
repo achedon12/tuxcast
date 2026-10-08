@@ -1,0 +1,40 @@
+:root {
+  --tuxcast-violet: #7c3aed;
+  --tuxcast-amber: #f59e0b;
+}
+
+.hero {
+  text-align: center;
+  padding: 1rem 0 0.5rem;
+}
+
+.hero h1 {
+  font-weight: 800;
+  font-size: 2.4rem;
+  letter-spacing: -0.02em;
+  color: var(--md-default-fg-color);
+  margin-bottom: 0.6rem;
+}
+
+.hero p {
+  max-width: 40rem;
+  margin: 0 auto 1.2rem;
+  font-size: 1.05rem;
+}
+
+.hero-logo {
+  width: 96px;
+  height: 96px;
+}
+
+img.terminal {
+  display: block;
+  margin: 1.5rem auto;
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgb(0 0 0 / 25%);
+}
+
+.md-typeset .grid.cards > ul > li {
+  border-radius: 10px;
+}

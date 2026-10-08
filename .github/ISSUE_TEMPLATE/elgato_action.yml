@@ -1,0 +1,30 @@
+name: 🎛️ Elgato action not converted
+description: tuxcast convert listed an action it could not convert.
+labels: [convert, good first issue]
+body:
+  - type: input
+    id: uuid
+    attributes:
+      label: Action UUID
+      description: The report prints it, e.g. `com.elgato.streamdeck.soundboard.playaudio`.
+    validations:
+      required: true
+  - type: input
+    id: plugin
+    attributes:
+      label: Elgato plugin
+      description: Which Stream Deck plugin provides it (name and author).
+      placeholder: Soundboard, by Elgato
+  - type: textarea
+    id: settings
+    attributes:
+      label: The action in manifest.json
+      description: |
+        Unzip the `.streamDeckProfile`, open the page's `manifest.json` and paste this key's block
+        (the object under `"Actions"`). Remove anything private.
+      render: json
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should it become in StreamController?
+      description: The plugin and action that do the same thing, if you know.
