@@ -8,7 +8,8 @@ All notable changes to tuxcast are listed here. The format follows
 
 ## [0.1.0] - 2026-10-08
 
-The first release: the problems every Linux streamer hits, each solved by one command.
+The first release, on PyPI (`pipx install tuxcast`): the problems every Linux streamer hits, each
+solved by one command.
 
 ### Added
 

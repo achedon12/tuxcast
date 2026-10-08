@@ -4,7 +4,7 @@
 # It uses pipx when available (recommended), and never needs root.
 set -eu
 
-SOURCE="${TUXCAST_SOURCE:-git+https://github.com/achedon12/tuxcast.git}"
+SOURCE="${TUXCAST_SOURCE:-tuxcast}"   # TUXCAST_SOURCE=git+https://github.com/achedon12/tuxcast.git for main
 
 say() { printf '\033[1;36m==>\033[0m %s\n' "$*"; }
 die() { printf '\033[1;31merror:\033[0m %s\n' "$*" >&2; exit 1; }

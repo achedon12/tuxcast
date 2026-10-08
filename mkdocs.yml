@@ -120,6 +120,7 @@ nav:
   - Links:
       - Live demo: demo/index.html
       - Releases: https://github.com/achedon12/tuxcast/releases
+      - PyPI: https://pypi.org/project/tuxcast/
       - Issues: https://github.com/achedon12/tuxcast/issues
       - Discussions: https://github.com/achedon12/tuxcast/discussions
       - Source code: https://github.com/achedon12/tuxcast

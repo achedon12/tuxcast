@@ -11,7 +11,7 @@ it for you.
 ## 1. Check where you stand
 
 ```sh
-pipx install git+https://github.com/achedon12/tuxcast.git
+pipx install tuxcast
 tuxcast doctor
 ```
 

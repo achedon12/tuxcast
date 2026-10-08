@@ -2,13 +2,13 @@
 
 ## Install
 
-tuxcast needs **Python 3.11 or newer**, which every current distribution ships. Install it
-for your user with [pipx](https://pipx.pypa.io/):
+tuxcast needs **Python 3.11 or newer**, which every current distribution ships. It is published on
+[PyPI](https://pypi.org/project/tuxcast/); install it for your user with [pipx](https://pipx.pypa.io/):
 
 === "pipx (recommended)"
 
     ```sh
-    pipx install git+https://github.com/achedon12/tuxcast.git
+    pipx install tuxcast
     ```
 
 === "Installer script"
@@ -17,12 +17,12 @@ for your user with [pipx](https://pipx.pypa.io/):
     curl -fsSL https://raw.githubusercontent.com/achedon12/tuxcast/main/install.sh | sh
     ```
 
-    The script uses pipx (or uv) and refuses to run as root. [Read it first](https://github.com/achedon12/tuxcast/blob/main/install.sh).
+    The script installs from PyPI with pipx (or uv) and refuses to run as root. [Read it first](https://github.com/achedon12/tuxcast/blob/main/install.sh).
 
 === "uv"
 
     ```sh
-    uv tool install git+https://github.com/achedon12/tuxcast.git
+    uv tool install tuxcast
     ```
 
 No pipx yet? `sudo apt install pipx` (Debian, Ubuntu), `sudo dnf install pipx` (Fedora) or
