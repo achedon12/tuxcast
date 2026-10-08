@@ -52,13 +52,21 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Check out the wiki
-        uses: actions/checkout@v7
-        with:
-          repository: ${{ github.repository }}.wiki
-          path: wiki
+        id: wiki
+        env:
+          TOKEN: ${{ github.token }}
+        run: |
+          # GitHub creates the wiki's repository with its first page, made by hand once
+          if git clone "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git" wiki 2>/dev/null; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::No wiki yet: create its first page on GitHub, then run this workflow again."
+          fi
       - name: Generate the wiki from docs/
+        if: steps.wiki.outputs.ready == 'true'
         run: python3 .github/scripts/build-wiki.py . wiki
       - name: Publish
+        if: steps.wiki.outputs.ready == 'true'
         working-directory: wiki
         run: |
           git config user.name "github-actions[bot]"
