@@ -70,3 +70,11 @@ def test_patch_list_without_patches(tmp_path, monkeypatch, capsys):
     monkeypatch.setenv("XDG_CONFIG_HOME", str(tmp_path))
     assert cli.main(["patch", "list"]) == 0
     assert "No patches" in capsys.readouterr().out
+
+
+def test_titles_cannot_inject_terminal_escapes(tmp_path, capsys):
+    profile = tmp_path / "p.streamDeckProfile"
+    make_v2_profile(profile, pages=[{"0,0": key("com.example.x", "\x1b]0;pwned\x07\x1b[2J")}])
+    cli.main(["convert", str(profile), "--pages-dir", str(tmp_path / "pages"), "--layout", "us", "-n"])
+    out = capsys.readouterr().out
+    assert "\x1b]0;" not in out and "\x1b[2J" not in out

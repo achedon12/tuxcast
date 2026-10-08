@@ -46,12 +46,12 @@ def cmd_doctor(args: argparse.Namespace) -> int:
             ui.section(topic.title)
             for finding in findings:
                 symbol, colour = SYMBOLS[finding.status]
-                print(f"  {ui.style(symbol, colour)} {finding.summary}")
+                print(f"  {ui.style(symbol, colour)} {ui.clean(finding.summary)}")
                 if finding.detail and (args.verbose or finding.status in (doctor.Status.WARN, doctor.Status.FAIL)
                                        or finding.status is doctor.Status.INFO):
-                    print(ui.style(f"      {finding.detail}", "dim"))
+                    print(ui.style(f"      {ui.clean(finding.detail)}", "dim"))
                 if finding.fix:
-                    print(f"      {ui.style('fix:', 'cyan')} {finding.fix}")
+                    print(f"      {ui.style('fix:', 'cyan')} {ui.clean(finding.fix)}")
         statuses = [f.status for _, findings in results for f in findings]
         failed, warned = statuses.count(doctor.Status.FAIL), statuses.count(doctor.Status.WARN)
         print()
@@ -98,7 +98,7 @@ def cmd_convert(args: argparse.Namespace) -> int:
     verb = "Would write" if args.dry_run else "Wrote"
     ui.title(f"{verb} {len(result.pages)} page{'s' * (len(result.pages) > 1)} to {pages_dir}")
     for page in result.pages:
-        ui.info(f"• {page.stem}")
+        ui.info(f"• {ui.clean(page.stem)}")
     print()
     total = len(result.keys)
     images = f"{result.images} image{'s' * (result.images != 1)}"
@@ -111,10 +111,10 @@ def cmd_convert(args: argparse.Namespace) -> int:
         ui.section(f"{heading} ({len(keys)})")
         for key in keys:
             title = f" “{key.title}”" if key.title else ""
-            print(f"  {ui.style('•', colour)} {key.page} [{key.position}]{title}: "
-                  f"{'; '.join(key.notes) or key.uuid}")
+            line = f"{key.page} [{key.position}]{title}: {'; '.join(key.notes) or key.uuid}"
+            print(f"  {ui.style('•', colour)} {ui.clean(line)}")
     for warning in result.warnings:
-        ui.warning(warning)
+        ui.warning(ui.clean(warning))
     if result.plugins:
         ui.section("StreamController plugins these pages use")
         ui.info(", ".join(sorted(result.plugins)) + "  (install them from the StreamController store)")
@@ -226,7 +226,7 @@ def cmd_audio_status(_args: argparse.Namespace) -> int:
     ui.section("Apps playing now")
     streams = audio.playing(System())
     for stream in streams:
-        ui.info(f"• {stream.application}  → sink {stream.sink}  (#{stream.index})")
+        ui.info(ui.clean(f"• {stream.application}  → sink {stream.sink}  (#{stream.index})"))
     if not streams:
         ui.info("None")
     return 0
@@ -242,9 +242,9 @@ def cmd_audio_route(args: argparse.Namespace) -> int:
         done = subprocess.run(["pactl", "move-sink-input", stream.index, sink],
                               capture_output=True, text=True, check=False)
         if done.returncode:
-            ui.error(f"{stream.application}: {done.stderr.strip() or 'pactl failed'}")
+            ui.error(ui.clean(f"{stream.application}: {done.stderr.strip() or 'pactl failed'}"))
             return 1
-        ui.success(f"{stream.application} → {sink}")
+        ui.success(ui.clean(f"{stream.application} → {sink}"))
     ui.hint("PipeWire remembers this choice for the next time the app plays.")
     return 0
 

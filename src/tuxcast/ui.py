@@ -7,6 +7,7 @@ when NO_COLOR is set, and forced on with FORCE_COLOR.
 from __future__ import annotations
 
 import os
+import re
 import sys
 
 _CODES = {
@@ -19,6 +20,16 @@ _CODES = {
     "magenta": "35",
     "cyan": "36",
 }
+
+
+# C0/C1 control characters, including ESC: text from files we read (profile titles, app
+# names) must never be able to move the cursor, recolor or rewrite the terminal
+_CONTROL = re.compile(r"[\x00-\x08\x0b-\x1f\x7f-\x9f]")
+
+
+def clean(text: str) -> str:
+    """Untrusted text, made safe to print: control characters become '?'."""
+    return _CONTROL.sub("?", text)
 
 
 def color_enabled(stream=None) -> bool:

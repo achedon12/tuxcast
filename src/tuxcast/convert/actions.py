@@ -117,18 +117,27 @@ def hotkey(source: Action, context: Context) -> list[dict]:
     return [action(f"{OS}::Hotkey", keys=keys, delay=0.02, repeat=False, hold_until_release=False)] if keys else []
 
 
+WEB_SCHEMES = ("http://", "https://")
+
+
 @maps("com.elgato.streamdeck.system.website")
-def website(source: Action, _context: Context) -> list[dict]:
+def website(source: Action, context: Context) -> list[dict]:
     url = str(setting(source.settings, "path", "url")).strip()
-    if url and "://" not in url:
+    if url and ":" not in url.split("/", 1)[0]:
         url = "https://" + url
-    return [action(f"{OS}::OpenInBrowser", url=url, new_window=False)] if url else []
+    if not url:
+        return []
+    if not url.lower().startswith(WEB_SCHEMES):
+        # profiles can come from anyone: a key must not open file:, javascript: or app links
+        context.notes.append(f"opens a non-web address ({url.split(':', 1)[0]}:): set it again by hand")
+        return []
+    return [action(f"{OS}::OpenInBrowser", url=url, new_window=False)]
 
 
 @maps("com.elgato.streamdeck.system.open")
 def open_(source: Action, context: Context) -> list[dict]:
     target = str(setting(source.settings, "path", "openInBrowser"))
-    if target.startswith(("http://", "https://")):
+    if target.lower().startswith(WEB_SCHEMES):
         return [action(f"{OS}::OpenInBrowser", url=target, new_window=False)]
     context.notes.append(f"opens {target or 'an application'} on Windows/macOS: set a Linux command")
     return []

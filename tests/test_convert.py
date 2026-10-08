@@ -262,3 +262,12 @@ def test_nothing_is_written_when_an_image_fails(tmp_path, monkeypatch):
     monkeypatch.setattr(Path, "write_bytes", failing)
     with pytest.raises(ConversionError, match="Permission denied"):
         run(tmp_path, profile)
+
+
+@pytest.mark.parametrize("url", ["javascript:alert(1)", "file:///etc/passwd", "steam://run/730"])
+def test_websites_must_be_web_addresses(tmp_path, url):
+    profile = tmp_path / "p.streamDeckProfile"
+    make_v2_profile(profile, pages=[{"0,0": key("com.elgato.streamdeck.system.website", "x", {"path": url})}])
+    result, pages = run(tmp_path, profile)
+    assert load(pages / "Gaming.json")["0x0"]["states"]["0"]["actions"] == []
+    assert "non-web address" in result.keys[0].notes[0]
