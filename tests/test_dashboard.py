@@ -111,3 +111,18 @@ def test_malformed_requests(dashboard):
 def test_patches_listing(dashboard):
     status, data, _ = call(dashboard, "GET", "/api/patches")
     assert status == 200 and data["patches"] == [] and data["watching"] is False
+
+
+def test_body_is_not_read_without_the_token_or_with_a_bad_length(dashboard):
+    assert call(dashboard, "POST", "/api/audio/setup", b"{}", token=False)[0] == 403
+    status, _, _ = call(dashboard, "POST", "/api/audio/setup", b"", headers={"Content-Length": "-1"})
+    assert status == 400
+
+
+def test_old_uploads_are_dropped(dashboard, tmp_path):
+    profile = tmp_path / "p.streamDeckProfile"
+    make_v2_profile(profile, pages=[{"0,0": key("com.elgato.obsstudio.stream", "x")}])
+    ids = [call(dashboard, "POST", "/api/convert/preview", profile.read_bytes(),
+                headers={"X-Filename": "p.streamDeckProfile"})[1]["upload"] for _ in range(12)]
+    assert len(dashboard.uploads) == 10
+    assert call(dashboard, "POST", "/api/convert", {"upload": ids[0]})[0] == 404

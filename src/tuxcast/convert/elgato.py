@@ -21,6 +21,9 @@ from dataclasses import dataclass, field
 from pathlib import Path, PurePosixPath
 
 IMAGE_SUFFIXES = (".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp")
+# Limits against archives that inflate to gigabytes: real profiles are a few megabytes
+MAX_ENTRY = 32 * 1024 * 1024
+MAX_TOTAL = 512 * 1024 * 1024
 
 
 class ProfileError(ValueError):
@@ -53,13 +56,22 @@ class ZipSource(Source):
         except (OSError, zipfile.BadZipFile) as exc:
             raise ProfileError(f"{path.name} is not a Stream Deck profile export (not a zip file)") from exc
         self._names = [n for n in self.archive.namelist() if not n.endswith("/")]
+        self._extracted = 0
 
     def names(self) -> list[str]:
         return self._names
 
     def read(self, name: str) -> bytes:
+        size = self.archive.getinfo(name).file_size
+        if size > MAX_ENTRY or self._extracted + size > MAX_TOTAL:
+            raise OSError(f"{name} is too large for a Stream Deck profile")
+        self._extracted += size
         try:
-            return self.archive.read(name)
+            with self.archive.open(name) as entry:
+                data = entry.read(MAX_ENTRY + 1)  # the size in the header could lie
+            if len(data) > MAX_ENTRY:
+                raise OSError(f"{name} is too large for a Stream Deck profile")
+            return data
         except (zipfile.BadZipFile, NotImplementedError, RuntimeError, zlib.error) as exc:
             raise OSError(f"cannot extract {name}: {exc}") from exc
 

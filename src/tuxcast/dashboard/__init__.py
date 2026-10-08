@@ -27,6 +27,7 @@ from tuxcast.convert import ConversionError, convert, keymap
 from tuxcast.system import System
 
 MAX_UPLOAD = 64 * 1024 * 1024
+MAX_UPLOADS = 10  # profiles kept for converting; older ones are deleted
 STATIC = {
     "/": ("index.html", "text/html; charset=utf-8"),
     "/app.css": ("app.css", "text/css; charset=utf-8"),
@@ -292,7 +293,11 @@ class Dashboard:
         folder.mkdir()
         path = folder / f"{stem}{suffix}"
         path.write_bytes(content)
-        self.uploads[folder.name] = path
+        with self.lock:
+            self.uploads[folder.name] = path
+            while len(self.uploads) > MAX_UPLOADS:
+                oldest = next(iter(self.uploads))
+                shutil.rmtree(self.uploads.pop(oldest).parent, ignore_errors=True)
         return path
 
 
@@ -359,25 +364,36 @@ def make_handler(dashboard: Dashboard, allowed_hosts: set[str]) -> type[BaseHTTP
                 body = resources.files("tuxcast.dashboard").joinpath("static", name).read_bytes()
                 self.send(HTTPStatus.OK, body, kind, cache=url.path != "/")
                 return
-            self.api("GET", url.path, b"")
+            if self.allowed("GET", url.path):
+                self.api("GET", url.path, b"")
 
         def do_POST(self) -> None:
-            if not self.trusted():
+            if not self.trusted() or not self.allowed("POST", urlsplit(self.path).path):
                 return
-            length = int(self.headers.get("Content-Length") or 0)
+            # the body is only read once the request is known to come from the dashboard
+            try:
+                length = int(self.headers.get("Content-Length") or 0)
+            except ValueError:
+                length = -1
+            if length < 0:
+                self.refuse(HTTPStatus.BAD_REQUEST, "Invalid Content-Length.")
+                return
             if length > MAX_UPLOAD:
                 self.refuse(HTTPStatus.REQUEST_ENTITY_TOO_LARGE, "That file is too big for a profile.")
                 return
             self.api("POST", urlsplit(self.path).path, self.rfile.read(length) if length else b"")
 
-        def api(self, method: str, path: str, raw: bytes) -> None:
-            route = dashboard.routes.get((method, path))
-            if route is None:
+        def allowed(self, method: str, path: str) -> bool:
+            if (method, path) not in dashboard.routes:
                 self.refuse(HTTPStatus.NOT_FOUND, "Not found.")
-                return
+                return False
             if not dashboard.authorized(self.headers.get("X-Tuxcast-Token")):
                 self.refuse(HTTPStatus.FORBIDDEN, "Missing or wrong token.")
-                return
+                return False
+            return True
+
+        def api(self, method: str, path: str, raw: bytes) -> None:
+            route = dashboard.routes[(method, path)]
             try:
                 if path == "/api/convert/preview":
                     filename = self.headers.get("X-Filename", "profile.streamDeckProfile")

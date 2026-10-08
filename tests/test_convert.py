@@ -286,3 +286,24 @@ def test_previews_describe_each_page(tmp_path):
     mute = next(k for k in main.keys if k.title == "Mute")
     assert mute.image.startswith("data:image/png;base64,") and mute.status == "converted"
     assert folder.folder and {k.status for k in folder.keys} == {"manual", "added"}
+
+
+def test_oversized_entries_are_refused(tmp_path, monkeypatch):
+    from tuxcast.convert import elgato
+
+    monkeypatch.setattr(elgato, "MAX_ENTRY", 1000)
+    profile = tmp_path / "p.streamDeckProfile"
+    make_v2_profile(profile, pages=[{"0,0": key(HOTKEY, "a", ctrl(ord("A")))}])
+    with zipfile.ZipFile(profile, "a") as archive:
+        name = next(n for n in archive.namelist() if n.endswith("manifest.json") and "Profiles" in n)
+        bomb = name.replace("manifest.json", "Images/bomb.png")
+        archive.writestr(bomb, b"\0" * 50_000, compress_type=zipfile.ZIP_DEFLATED)
+    data = json.loads(zipfile.ZipFile(profile).read(name))
+    data["Controllers"][0]["Actions"]["0,0"]["States"][0]["Image"] = "Images/bomb.png"
+    rebuilt = tmp_path / "q.streamDeckProfile"
+    with zipfile.ZipFile(profile) as source, zipfile.ZipFile(rebuilt, "w") as out:
+        for entry in source.namelist():
+            out.writestr(entry, json.dumps(data) if entry == name else source.read(entry))
+    result, _ = run(tmp_path, rebuilt, dry_run=True)
+    assert result.images == 0
+    assert "could not be extracted" in result.keys[0].notes[0]
