@@ -1,0 +1,147 @@
+{% extends "main.html" %}
+
+{#- The landing page: the rest of the site keeps Material's documentation layout. -#}
+
+{% block tabs %}
+{{ super() }}
+<div class="tc">
+  <section class="tc-hero">
+    <div class="tc-hero__text">
+      <h1 class="tc-title">Check your Linux stream setup before you go&nbsp;live.</h1>
+      <p class="tc-lede">
+        tuxcast finds what breaks streams on Linux, like a Discord key that does nothing, a Wi-Fi
+        link Twitch calls unstable or a Stream Deck with no app, and fixes each one with a single
+        command.
+      </p>
+      <div class="tc-install">
+        <code id="tc-install-command">pipx install git+https://github.com/achedon12/tuxcast.git</code>
+        <button type="button" class="tc-copy" data-copy="tc-install-command">Copy</button>
+      </div>
+      <p class="tc-links">
+        <a href="getting-started/">Get started</a>
+        <a href="guides/">Read the guides</a>
+        <a href="https://github.com/achedon12/tuxcast">Source on GitHub</a>
+      </p>
+    </div>
+
+    <figure class="tc-deck" aria-label="A Stream Deck whose keys are tuxcast doctor's checks, lighting up as they pass">
+      <div class="tc-deck__body">
+        <ol class="tc-deck__keys">
+          <li class="tc-key" data-status="ok"><span class="tc-key__led"></span>Display</li>
+          <li class="tc-key" data-status="ok"><span class="tc-key__led"></span>PipeWire</li>
+          <li class="tc-key" data-status="ok"><span class="tc-key__led"></span>Encoder</li>
+          <li class="tc-key" data-status="ok"><span class="tc-key__led"></span>OBS</li>
+          <li class="tc-key" data-status="ok"><span class="tc-key__led"></span>Web&shy;socket</li>
+          <li class="tc-key" data-status="ok"><span class="tc-key__led"></span>Stream Deck</li>
+          <li class="tc-key" data-status="ok"><span class="tc-key__led"></span>udev</li>
+          <li class="tc-key" data-status="ok"><span class="tc-key__led"></span>Discord</li>
+          <li class="tc-key" data-status="ok"><span class="tc-key__led"></span>Spotify</li>
+          <li class="tc-key" data-status="ok"><span class="tc-key__led"></span>Sinks</li>
+          <li class="tc-key" data-status="warn"><span class="tc-key__led"></span>Wi-Fi</li>
+          <li class="tc-key" data-status="ok"><span class="tc-key__led"></span>Bitrate</li>
+          <li class="tc-key" data-status="ok"><span class="tc-key__led"></span>Patches</li>
+          <li class="tc-key" data-status="ok"><span class="tc-key__led"></span>Profiles</li>
+          <li class="tc-key tc-key--live" data-status="live"><span class="tc-key__led"></span>Go live</li>
+        </ol>
+      </div>
+      <figcaption>Each key is one of <code>tuxcast doctor</code>'s checks.</figcaption>
+    </figure>
+  </section>
+
+  <section class="tc-section">
+    <h2 class="tc-h2">What breaks, and the command that fixes it</h2>
+    <dl class="tc-fixes">
+      <div class="tc-fix">
+        <dt>“Elgato's app doesn't exist on Linux, and I have 8 pages of keys.”</dt>
+        <dd><a href="commands/convert/"><code>tuxcast convert Streaming.streamDeckProfile</code></a></dd>
+      </div>
+      <div class="tc-fix">
+        <dt>“My Discord mute key does nothing.”</dt>
+        <dd><a href="commands/bridge/"><code>tuxcast bridge discord --install</code></a></dd>
+      </div>
+      <div class="tc-fix">
+        <dt>“I can't keep the music out of my VODs.”</dt>
+        <dd><a href="commands/audio/"><code>tuxcast audio setup</code></a></dd>
+      </div>
+      <div class="tc-fix">
+        <dt>“Twitch says my connection is unstable, the speed test says it's fine.”</dt>
+        <dd><a href="guides/network/"><code>tuxcast doctor --only network</code></a></dd>
+      </div>
+      <div class="tc-fix">
+        <dt>“Play/pause on my deck doesn't reach Spotify.”</dt>
+        <dd><a href="guides/sandboxes/#spotify"><code>tuxcast doctor --only spotify</code></a></dd>
+      </div>
+      <div class="tc-fix">
+        <dt>“My deck went dark after StreamController crashed.”</dt>
+        <dd><a href="commands/deck/"><code>tuxcast deck reset</code></a></dd>
+      </div>
+      <div class="tc-fix">
+        <dt>“Every plugin update undoes the fix I made.”</dt>
+        <dd><a href="commands/patch/"><code>tuxcast patch install</code></a></dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="tc-section tc-split">
+    <div>
+      <h2 class="tc-h2">One run tells you what to fix</h2>
+      <p>
+        <code>tuxcast doctor</code> checks eight areas and only reads your system. Every warning says
+        why it matters on stream and the exact command or setting that fixes it. It exits with an
+        error when something is broken, so <code>tuxcast doctor &amp;&amp; obs</code> only opens OBS on a
+        healthy setup.
+      </p>
+      <p><a href="commands/doctor/">What the doctor checks</a></p>
+    </div>
+    <img class="tc-shot" src="assets/terminal-doctor.svg" alt="tuxcast doctor checking a Stream Deck, Discord, Spotify and the network, with one Wi-Fi warning" loading="lazy">
+  </section>
+
+  <section class="tc-section tc-split tc-split--flip">
+    <div>
+      <h2 class="tc-h2">Your Windows Stream Deck profile, on Linux</h2>
+      <p>
+        Export your profile from the Stream Deck app and convert it to
+        <a href="https://streamcontroller.core447.com/">StreamController</a> pages. Images, titles,
+        folders and multi actions come along, hotkeys are translated for AZERTY and QWERTZ keyboards,
+        and the report lists the few keys to finish by hand.
+      </p>
+      <p><a href="reference/elgato-actions/">Every action that converts</a></p>
+    </div>
+    <img class="tc-shot" src="assets/terminal-convert.svg" alt="tuxcast convert writing two StreamController pages and listing two keys to redo by hand" loading="lazy">
+  </section>
+
+  <section class="tc-section">
+    <h2 class="tc-h2">Built to be trusted with your setup</h2>
+    <ul class="tc-promises">
+      <li><strong>It never needs root.</strong> Everything happens in your session. The one privileged step, a udev rule, is printed for you to run.</li>
+      <li><strong>It reads before it writes.</strong> The doctor changes nothing, and every other command says what it wrote.</li>
+      <li><strong>It has no dependencies.</strong> Python's standard library only, so it installs in seconds and keeps working.</li>
+    </ul>
+  </section>
+
+  <section class="tc-section tc-end">
+    <h2 class="tc-h2">Run it before your next stream</h2>
+    <div class="tc-install">
+      <code id="tc-install-command-2">pipx install git+https://github.com/achedon12/tuxcast.git &amp;&amp; tuxcast doctor</code>
+      <button type="button" class="tc-copy" data-copy="tc-install-command-2">Copy</button>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block content %}{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+  document.querySelectorAll(".tc-copy").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var text = document.getElementById(button.dataset.copy).textContent;
+      navigator.clipboard.writeText(text).then(function () {
+        button.textContent = "Copied";
+        setTimeout(function () { button.textContent = "Copy"; }, 1600);
+      });
+    });
+  });
+</script>
+{% endblock %}

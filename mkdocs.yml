@@ -9,25 +9,29 @@ copyright: MIT licensed · Made for streamers who chose Linux
 
 theme:
   name: material
+  custom_dir: overrides
+  font:
+    text: Bricolage Grotesque
+    code: JetBrains Mono
   logo: assets/logo.svg
   favicon: assets/logo.svg
   icon:
     repo: fontawesome/brands/github
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: deep purple
-      accent: amber
-      toggle:
-        icon: material/weather-night
-        name: Dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: deep purple
-      accent: amber
+      primary: custom
+      accent: custom
       toggle:
         icon: material/weather-sunny
         name: Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
   features:
     - navigation.instant
     - navigation.tabs
