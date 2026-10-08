@@ -14,9 +14,11 @@ has not created yet, and start working as soon as it does.
 from __future__ import annotations
 
 import stat
+import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
+from tuxcast import paths
 from tuxcast.system import System
 
 DISCORD_FLATPAK_ID = "com.discordapp.Discord"
@@ -150,3 +152,35 @@ def grants(links: list[Link]) -> list[str]:
 
 def grant_command(app_id: str, links: list[Link]) -> list[str]:
     return ["flatpak", "override", "--user", *(f"--filesystem={g}" for g in grants(links)), app_id]
+
+
+def default_clients(system: System) -> list[str]:
+    """The Flatpak clients to grant access to when none is named."""
+    return [app for app in (paths.STREAMCONTROLLER_FLATPAK_ID,) if app in system.flatpak_apps()]
+
+
+def grant(app_id: str, links: list[Link]) -> str:
+    """Runs the Flatpak override for a client; returns an error message, or "" on success."""
+    try:
+        done = subprocess.run(grant_command(app_id, links), capture_output=True, text=True, check=False)
+    except OSError as exc:
+        return f"cannot run flatpak: {exc.strerror}"
+    return "" if done.returncode == 0 else (done.stderr.strip() or f"flatpak exited with {done.returncode}")
+
+
+UNIT = "tuxcast-discord-bridge.service"
+
+
+def unit(command: str) -> str:
+    return f"""[Unit]
+Description=Expose Discord's IPC socket to every client (tuxcast bridge discord)
+After=graphical-session.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart={command} bridge discord --quiet --no-grant
+
+[Install]
+WantedBy=default.target
+"""

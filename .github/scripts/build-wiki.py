@@ -26,6 +26,7 @@ SECTIONS = {
     },
     "Commands": {
         "commands/index.md": "Commands",
+        "commands/ui.md": "tuxcast-ui",
         "commands/doctor.md": "tuxcast-doctor",
         "commands/convert.md": "tuxcast-convert",
         "commands/bridge.md": "tuxcast-bridge-discord",

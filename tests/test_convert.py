@@ -271,3 +271,18 @@ def test_websites_must_be_web_addresses(tmp_path, url):
     result, pages = run(tmp_path, profile)
     assert load(pages / "Gaming.json")["0x0"]["states"]["0"]["actions"] == []
     assert "non-web address" in result.keys[0].notes[0]
+
+
+def test_previews_describe_each_page(tmp_path):
+    folder_id = uuid.uuid4()
+    profile = tmp_path / "p.streamDeckProfile"
+    make_v2_profile(profile, pages=[{
+        "0,0": key(HOTKEY, "Mute", ctrl(ord("M")), image="Images/mute.png"),
+        "4,2": key(FOLDER, "Scenes", {"ProfileUUID": str(folder_id)}),
+    }], folders=[(folder_id, {"1,0": key("com.example.x", "Odd")})])
+    result, _ = run(tmp_path, profile, dry_run=True)
+    main, folder = result.previews
+    assert (main.name, main.columns, main.rows, main.folder) == ("Gaming", 5, 3, False)
+    mute = next(k for k in main.keys if k.title == "Mute")
+    assert mute.image.startswith("data:image/png;base64,") and mute.status == "converted"
+    assert folder.folder and {k.status for k in folder.keys} == {"manual", "added"}

@@ -26,6 +26,7 @@ def streamdeck(system: System) -> Iterator[Finding]:
                 f"{label}: no permission",
                 "Your user cannot open the device, so no app can draw on its keys.",
                 "tuxcast deck udev   (prints the udev rule and how to install it)",
+                action="deck",
             )
 
     flatpak = paths.STREAMCONTROLLER_FLATPAK_ID in system.flatpak_apps()
@@ -35,6 +36,7 @@ def streamdeck(system: System) -> Iterator[Finding]:
             "Coming from Windows or macOS?",
             "Your Elgato profiles can be converted instead of rebuilt by hand.",
             "tuxcast convert MyProfile.streamDeckProfile",
+            action="convert",
         )
     else:
         yield warn(

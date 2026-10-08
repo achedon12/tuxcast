@@ -6,6 +6,7 @@ tuxcast <command> [options]
 
 | Command | What it does | Changes your system |
 | --- | --- | --- |
+| [`ui`](ui.md) | A dashboard for all of the commands below, in your browser | What you click |
 | [`doctor`](doctor.md) | Checks your streaming setup and explains the fixes | No |
 | [`convert`](convert.md) | Elgato Stream Deck profiles to StreamController pages | Writes pages and images |
 | [`bridge discord`](bridge.md) | Exposes Discord's socket to every client | Symlinks, Flatpak overrides |

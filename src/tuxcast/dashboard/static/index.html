@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tuxcast</title>
+  <link rel="icon" href="/logo.svg">
+  <link rel="stylesheet" href="/app.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="shell">
+    <nav class="side" aria-label="Sections">
+      <a class="brand" href="#overview"><img src="/logo.svg" alt="" width="36" height="36"><span>tuxcast</span></a>
+      <ul class="nav">
+        <li><a href="#overview" data-view="overview"><span class="dot" data-for="overview"></span>Overview</a></li>
+        <li><a href="#deck" data-view="deck"><span class="dot" data-for="deck"></span>Stream Deck</a></li>
+        <li><a href="#audio" data-view="audio"><span class="dot" data-for="audio"></span>Audio</a></li>
+        <li><a href="#discord" data-view="discord"><span class="dot" data-for="discord"></span>Discord</a></li>
+        <li><a href="#patches" data-view="patches"><span class="dot" data-for="patches"></span>Patches</a></li>
+      </ul>
+      <p class="side__foot">Runs on this machine only. <span id="version"></span></p>
+    </nav>
+    <main id="main" tabindex="-1">
+      <div id="view" aria-live="polite"></div>
+    </main>
+  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

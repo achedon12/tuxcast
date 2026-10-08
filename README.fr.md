@@ -51,12 +51,17 @@ Chacun de ces problèmes a une solution perdue dans un fil de forum. tuxcast les
 
 | Commande | |
 | --- | --- |
+| `tuxcast ui` | Ouvre un tableau de bord local pour tout le reste : vérifications avec correctifs en un clic, aperçu visuel de tes pages Stream Deck converties, routage audio |
 | `tuxcast doctor` | Vérifie le serveur d'affichage, l'audio, l'encodeur GPU, OBS, le Stream Deck, Discord, Spotify et le réseau. Chaque problème est accompagné de son correctif |
 | `tuxcast convert` | Transforme les exports Elgato `.streamDeckProfile` en pages [StreamController](https://streamcontroller.core447.com/) : images, dossiers, multi-actions, raccourcis (AZERTY et QWERTZ gérés), touches OBS, Discord et Twitch |
 | `tuxcast bridge discord` | Rend le socket de Discord (snap, Vesktop, natif) visible aux applis Flatpak, et recrée le pont à chaque connexion |
 | `tuxcast audio` | Sorties PipeWire séparées pour le jeu, la musique, le vocal et les alertes, et y envoie les applis |
 | `tuxcast deck` | Liste les Stream Deck, donne la règle udev nécessaire, et réinitialise un Stream Deck figé après un plantage, sans le débrancher |
 | `tuxcast patch` | Réapplique les modifications que tu as faites dans les fichiers d'une appli à chaque fois qu'une mise à jour les efface |
+
+<p align="center">
+  <img src="docs/assets/ui-convert.png" alt="Le tableau de bord de tuxcast affiche l'aperçu d'un profil Elgato converti, touche par touche" width="820">
+</p>
 
 ## Installation
 

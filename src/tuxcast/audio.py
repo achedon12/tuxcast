@@ -8,6 +8,7 @@ at every login without any service running.
 from __future__ import annotations
 
 import re
+import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -114,3 +115,47 @@ def playing(system: System) -> list[Stream]:
         label = (name.group(1) if name else "") or (binary.group(1) if binary else "unknown")
         streams.append(Stream(index, label, sink.group(1) if sink else ""))
     return streams
+
+
+def setup(sinks: list[Sink]) -> Path:
+    """Writes the drop-in declaring `sinks`; PipeWire creates them at its next start."""
+    path = drop_in_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(render(sinks))
+    return path
+
+
+def remove() -> bool:
+    path = drop_in_path()
+    if not path.exists():
+        return False
+    path.unlink()
+    return True
+
+
+def restart() -> bool:
+    """Restarts PipeWire so sink changes apply now (sound cuts for a second)."""
+    try:
+        return subprocess.run(RESTART, capture_output=True, check=False).returncode == 0
+    except OSError:
+        return False
+
+
+def live_sinks(system: System) -> list[str]:
+    """The sink names PipeWire has right now."""
+    out = system.run("pactl", "list", "short", "sinks")
+    if not out or not out.ok:
+        return []
+    return [line.split("\t")[1] for line in out.stdout.splitlines() if line.count("\t") >= 1]
+
+
+def move(stream: str, sink: str) -> str:
+    """Moves a playing stream to a sink; returns an error message, or "" on success."""
+    if not stream.isdigit():
+        return "invalid stream"
+    try:
+        done = subprocess.run(["pactl", "move-sink-input", stream, sink], capture_output=True, text=True,
+                              check=False)
+    except OSError as exc:
+        return f"cannot run pactl: {exc.strerror}"
+    return "" if done.returncode == 0 else (done.stderr.strip() or "pactl failed")

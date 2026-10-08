@@ -7,6 +7,7 @@ the ones to redo by hand.
 
 from __future__ import annotations
 
+import base64
 import json
 import re
 from dataclasses import dataclass, field
@@ -35,9 +36,33 @@ class KeyReport:
     notes: tuple[str, ...] = ()
 
 
+IMAGE_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".gif": "image/gif",
+               ".webp": "image/webp"}  # SVG is left out on purpose: it can carry scripts
+
+
+@dataclass
+class PreviewKey:
+    column: int
+    row: int
+    title: str
+    status: str  # "converted", "partial", "manual", "added"
+    notes: tuple[str, ...] = ()
+    image: str = ""  # a data: URL, for showing the page before writing it
+
+
+@dataclass
+class PagePreview:
+    name: str
+    columns: int
+    rows: int
+    folder: bool
+    keys: list[PreviewKey] = field(default_factory=list)
+
+
 @dataclass
 class Result:
     pages: list[Path] = field(default_factory=list)
+    previews: list[PagePreview] = field(default_factory=list)
     images: int = 0
     keys: list[KeyReport] = field(default_factory=list)
     plugins: set[str] = field(default_factory=set)
@@ -142,6 +167,9 @@ def convert(
 
     files: dict[Path, bytes] = {}
     for profile, page, output, is_folder in plans:
+        columns, rows = grid(profile)
+        preview = PagePreview(output.stem, columns, rows, is_folder)
+        result.previews.append(preview)
         order = [str(o) for p, _, o, f in plans if p is profile and not f]
         context = actions.Context(layout=layout, resolve=resolve, page_order=order,
                                   current_page=home_index(profile, page, order, plans))
@@ -155,6 +183,8 @@ def convert(
             if image:
                 files[image[0]] = image[1]
                 result.images += 1
+            preview.keys.append(PreviewKey(key.column, key.row, report.title, report.status, report.notes,
+                                           data_url(image) if image else ""))
         if is_folder and "0x0" not in keys and not any(
                 k.action.uuid == "com.elgato.streamdeck.profile.backtoparent" for k in page.keys):
             keys["0x0"] = {"states": {"0": {
@@ -162,6 +192,7 @@ def convert(
                 "labels": {"bottom": label_for("back", "#ffffff", None)},
                 "background": {}, "media": {},
             }}}
+            preview.keys.append(PreviewKey(0, 0, "back", "added", ("added: the back key of this folder",)))
         if page.dials:
             result.warnings.append(f"{output.stem}: {page.dials} dial actions (Stream Deck +) were not converted")
         files[output] = (json.dumps({"keys": keys}, indent=4, ensure_ascii=False) + "\n").encode()
@@ -175,6 +206,17 @@ def convert(
         except OSError as exc:
             raise ConversionError(f"cannot write {exc.filename}: {exc.strerror}") from exc
     return result
+
+
+def grid(profile: Profile) -> tuple[int, int]:
+    """The deck size the profile was made for, from the keys it uses (a Mini at least)."""
+    keys = [key for page in profile.pages + profile.folders for key in page.keys]
+    return max([3, *(k.column + 1 for k in keys)]), max([2, *(k.row + 1 for k in keys)])
+
+
+def data_url(image: tuple[Path, bytes]) -> str:
+    kind = IMAGE_TYPES.get(image[0].suffix.lower())
+    return f"data:{kind};base64,{base64.b64encode(image[1]).decode()}" if kind else ""
 
 
 def home_index(profile: Profile, page: Page, order: list[str],

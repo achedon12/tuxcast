@@ -28,22 +28,23 @@ class Finding:
     summary: str
     detail: str = ""
     fix: str = ""
+    action: str = ""  # what the dashboard offers to do about it: "audio", "discord", "deck", "convert"
 
 
 def ok(summary: str, detail: str = "") -> Finding:
     return Finding(Status.OK, summary, detail)
 
 
-def info(summary: str, detail: str = "", fix: str = "") -> Finding:
-    return Finding(Status.INFO, summary, detail, fix)
+def info(summary: str, detail: str = "", fix: str = "", action: str = "") -> Finding:
+    return Finding(Status.INFO, summary, detail, fix, action)
 
 
-def warn(summary: str, detail: str = "", fix: str = "") -> Finding:
-    return Finding(Status.WARN, summary, detail, fix)
+def warn(summary: str, detail: str = "", fix: str = "", action: str = "") -> Finding:
+    return Finding(Status.WARN, summary, detail, fix, action)
 
 
-def fail(summary: str, detail: str = "", fix: str = "") -> Finding:
-    return Finding(Status.FAIL, summary, detail, fix)
+def fail(summary: str, detail: str = "", fix: str = "", action: str = "") -> Finding:
+    return Finding(Status.FAIL, summary, detail, fix, action)
 
 
 def skip(summary: str, detail: str = "") -> Finding:
@@ -99,3 +100,12 @@ def run(system: System, only: Iterable[str] = ()) -> list[tuple[Topic, list[Find
     return results
 
 
+
+
+def as_json(results: list[tuple[Topic, list[Finding]]]) -> list[dict]:
+    return [
+        {"topic": topic.key, "title": topic.title, "findings": [
+            {"status": f.status.value, "summary": f.summary, "detail": f.detail, "fix": f.fix, "action": f.action}
+            for f in findings]}
+        for topic, findings in results
+    ]

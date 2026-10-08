@@ -32,9 +32,7 @@ def audio(system: System) -> Iterator[Finding]:
     else:
         yield info("wpctl is not installed, WirePlumber was not checked")
 
-    sinks = system.run("pactl", "list", "short", "sinks")
-    names = {line.split("\t")[1] for line in sinks.stdout.splitlines() if "\t" in line} if sinks else set()
-    ours = sorted(name for name in names if name.startswith(virtual_sinks.PREFIX))
+    ours = sorted(name for name in virtual_sinks.live_sinks(system) if name.startswith(virtual_sinks.PREFIX))
     if ours:
         yield ok(f"{len(ours)} tuxcast sinks", ", ".join(ours))
     else:
@@ -43,4 +41,5 @@ def audio(system: System) -> Iterator[Finding]:
             "Game, music, Discord and alerts all reach OBS together, so you cannot mute the music "
             "in your VODs or lower Discord alone.",
             "tuxcast audio setup",
+            action="audio",
         )

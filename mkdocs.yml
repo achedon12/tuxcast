@@ -85,6 +85,7 @@ nav:
   - Getting started: getting-started.md
   - Commands:
       - commands/index.md
+      - ui: commands/ui.md
       - doctor: commands/doctor.md
       - convert: commands/convert.md
       - bridge discord: commands/bridge.md

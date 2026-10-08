@@ -35,11 +35,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     results = doctor.run(System(), only)
 
     if args.json:
-        print(json.dumps([
-            {"topic": topic.key, "title": topic.title, "findings": [
-                {"status": f.status.value, "summary": f.summary, "detail": f.detail, "fix": f.fix}
-                for f in findings]}
-            for topic, findings in results], indent=2))
+        print(json.dumps(doctor.as_json(results), indent=2))
     else:
         ui.title(f"tuxcast doctor {ui.style('v' + __version__, 'dim')}")
         for topic, findings in results:
@@ -126,13 +122,10 @@ def cmd_convert(args: argparse.Namespace) -> int:
 
 # --- bridge --------------------------------------------------------------------------------------
 
-BRIDGE_UNIT = "tuxcast-discord-bridge.service"
-
-
 def cmd_bridge_discord(args: argparse.Namespace) -> int:
     system = System()
     if args.uninstall:
-        removed = systemd.uninstall([BRIDGE_UNIT])
+        removed = systemd.uninstall([bridge.UNIT])
         ui.success("Removed the login service" if removed else "No login service was installed")
         return 0
 
@@ -145,34 +138,21 @@ def cmd_bridge_discord(args: argparse.Namespace) -> int:
             mark = "+" if link in changed or args.dry_run else "="
             ui.info(f"{mark} {link.path} → {link.target}  ({link.variant.name})")
 
-    apps = args.app or [app for app in (paths.STREAMCONTROLLER_FLATPAK_ID,) if app in system.flatpak_apps()]
-    for app in apps:
-        command = bridge.grant_command(app, links)
+    for app in args.app or bridge.default_clients(system):
         if args.dry_run or args.no_grant:
-            ui.hint(" ".join(command))
+            ui.hint(" ".join(bridge.grant_command(app, links)))
             continue
-        done = subprocess.run(command, capture_output=True, text=True, check=False)
-        if done.returncode == 0:
+        error = bridge.grant(app, links)
+        if not error:
             if not args.quiet:
                 ui.success(f"{app} may now reach Discord (restart it to apply)")
         else:
-            ui.error(f"flatpak override failed for {app}: {done.stderr.strip()}")
+            ui.error(f"flatpak override failed for {app}: {error}")
 
     if args.install and not args.dry_run:
-        systemd.install(enable=[BRIDGE_UNIT], units={BRIDGE_UNIT: f"""[Unit]
-Description=Expose Discord's IPC socket to every client (tuxcast bridge discord)
-After=graphical-session.target
-
-[Service]
-Type=oneshot
-RemainAfterExit=yes
-ExecStart={systemd.tuxcast_command()} bridge discord --quiet --no-grant
-
-[Install]
-WantedBy=default.target
-"""})
+        systemd.install({bridge.UNIT: bridge.unit(systemd.tuxcast_command())}, enable=[bridge.UNIT])
         if not args.quiet:
-            ui.success(f"Installed {BRIDGE_UNIT}: the bridge comes back at every login")
+            ui.success(f"Installed {bridge.UNIT}: the bridge comes back at every login")
     return 0
 
 
@@ -180,8 +160,10 @@ WantedBy=default.target
 
 def restart_pipewire(requested: bool) -> None:
     if requested:
-        subprocess.run(audio.RESTART, check=False)
-        ui.success("PipeWire restarted")
+        if audio.restart():
+            ui.success("PipeWire restarted")
+        else:
+            ui.error("PipeWire could not be restarted: " + " ".join(audio.RESTART))
     else:
         ui.hint("Apply now with: " + " ".join(audio.RESTART) + "   (cuts sound for a second), or log out and in.")
 
@@ -192,9 +174,7 @@ def cmd_audio_setup(args: argparse.Namespace) -> int:
     except ValueError as exc:
         ui.error(str(exc))
         return 2
-    path = audio.drop_in_path()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(audio.render(sinks))
+    path = audio.setup(sinks)
     ui.success(f"Declared {len(sinks)} sinks in {path}")
     for sink in sinks:
         ui.info(f"• {sink.description}  ({sink.node})")
@@ -205,12 +185,10 @@ def cmd_audio_setup(args: argparse.Namespace) -> int:
 
 
 def cmd_audio_remove(args: argparse.Namespace) -> int:
-    path = audio.drop_in_path()
-    if not path.exists():
+    if not audio.remove():
         ui.success("No tuxcast sinks are configured")
         return 0
-    path.unlink()
-    ui.success(f"Removed {path}")
+    ui.success(f"Removed {audio.drop_in_path()}")
     restart_pipewire(args.restart)
     return 0
 
@@ -239,10 +217,9 @@ def cmd_audio_route(args: argparse.Namespace) -> int:
         ui.error(f"no app named like {args.app!r} is playing sound right now")
         return 1
     for stream in matches:
-        done = subprocess.run(["pactl", "move-sink-input", stream.index, sink],
-                              capture_output=True, text=True, check=False)
-        if done.returncode:
-            ui.error(ui.clean(f"{stream.application}: {done.stderr.strip() or 'pactl failed'}"))
+        error = audio.move(stream.index, sink)
+        if error:
+            ui.error(ui.clean(f"{stream.application}: {error}"))
             return 1
         ui.success(ui.clean(f"{stream.application} → {sink}"))
     ui.hint("PipeWire remembers this choice for the next time the app plays.")
@@ -353,6 +330,35 @@ def cmd_patch_uninstall(_args: argparse.Namespace) -> int:
     return 0
 
 
+# --- ui ------------------------------------------------------------------------------------------
+
+def cmd_ui(args: argparse.Namespace) -> int:
+    import webbrowser
+
+    from tuxcast.dashboard import Dashboard, serve
+
+    dashboard = Dashboard(layout=args.layout or detect_layout())
+    try:
+        server = serve(dashboard, args.port)
+    except OSError as exc:
+        ui.error(f"cannot listen on port {args.port}: {exc.strerror}")
+        return 1
+    url = f"http://127.0.0.1:{server.server_address[1]}/?token={dashboard.token}"
+    ui.title("tuxcast dashboard")
+    ui.info(url)
+    ui.info(ui.style("Local only: it runs on this machine. Ctrl+C to stop.", "dim"))
+    if not args.no_browser:
+        webbrowser.open(url)
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print()
+    finally:
+        server.server_close()
+        dashboard.close()
+    return 0
+
+
 # --- parser --------------------------------------------------------------------------------------
 
 def build_parser() -> argparse.ArgumentParser:
@@ -369,6 +375,12 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--json", action="store_true", help="machine-readable output")
     p.add_argument("-v", "--verbose", action="store_true", help="show details of passing checks too")
     p.set_defaults(handler=cmd_doctor)
+
+    p = commands.add_parser("ui", help="open the dashboard in your browser")
+    p.add_argument("--port", type=int, default=0, help="port to listen on (default: a free one)")
+    p.add_argument("--no-browser", action="store_true", help="print the address without opening it")
+    p.add_argument("--layout", help="keyboard layout for converted hotkeys (default: detected)")
+    p.set_defaults(handler=cmd_ui)
 
     p = commands.add_parser("convert", help="convert an Elgato Stream Deck profile to StreamController pages")
     p.add_argument("profile", help=".streamDeckProfile, .streamDeckProfilesBackup or .sdProfile folder")

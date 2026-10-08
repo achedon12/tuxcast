@@ -40,6 +40,9 @@ Each line is a check: ✔ fine, • worth knowing, ⚠ will probably bite you, �
 and failures come with a `fix:` line. Start from the top: display and audio problems explain
 many of the ones below.
 
+Prefer clicking? `tuxcast ui` opens the same checks in a [dashboard](commands/ui.md), with a button
+for each fix tuxcast can apply.
+
 ## Fix what it found
 
 | The doctor says | Run |

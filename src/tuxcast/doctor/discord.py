@@ -47,6 +47,7 @@ def discord(system: System) -> Iterator[Finding]:
             "Its socket is not where clients look, so Stream Deck mute keys and rich presence "
             "cannot find Discord.",
             "tuxcast bridge discord --install",
+            action="discord",
         )
     elif any(variant is not bridge.SCANNED for variant in variants):
         yield ok("The Discord bridge is in place")
@@ -60,6 +61,7 @@ def discord(system: System) -> Iterator[Finding]:
                 f"{CLIENTS[app]} (Flatpak) cannot see Discord's socket",
                 "Missing sandbox permissions: " + ", ".join(lacking),
                 " ".join(bridge.grant_command(app, links)),
+                action="discord",
             )
         else:
             yield ok(f"{CLIENTS[app]} (Flatpak) can reach Discord")

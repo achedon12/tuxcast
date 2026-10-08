@@ -16,12 +16,16 @@ tuxcast runs as your user and only changes what a command says it changes:
 
 | Command | Writes |
 | --- | --- |
+| `ui` | what you click: the same changes as the commands below |
 | `doctor` | nothing |
 | `convert` | StreamController pages and images |
 | `bridge discord` | symlinks in `$XDG_RUNTIME_DIR`, Flatpak overrides, an optional user service |
 | `audio` | one PipeWire drop-in file in `~/.config/pipewire` |
 | `deck reset` | nothing on disk (a USB reset ioctl) |
 | `patch` | the files your own patch files name, and an optional user service |
+
+`tuxcast ui` listens on 127.0.0.1 only, requires the random token it prints on every request,
+refuses other hosts and origins, and serves its pages under a strict Content Security Policy.
 
 It never needs root. The only privileged step, installing the Stream Deck udev rule, is
 printed for you to run.
